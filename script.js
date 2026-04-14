@@ -83,24 +83,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentCard.classList.remove('playing');
             }
 
+            // Optimization: Show loading state while buffering for the cloud
+            btn.textContent = '⏳ Loading...';
+            btn.disabled = true;
+
             currentAudio = new Audio(audioSrc);
             currentCard = card;
             
-            const playPromise = currentAudio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    btn.textContent = '⏸ Pause';
-                    card.classList.add('playing');
-                }).catch(error => {
-                    console.log("Playback failed:", error);
-                });
-            }
+            // Wait for enough data to play smoothly
+            currentAudio.addEventListener('canplaythrough', () => {
+                if (currentCard === card) { // Ensure user hasn't switched songs while loading
+                    const playPromise = currentAudio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(_ => {
+                            btn.textContent = '⏸ Pause';
+                            btn.disabled = false;
+                            card.classList.add('playing');
+                        }).catch(error => {
+                            btn.textContent = '▶ Play';
+                            btn.disabled = false;
+                            console.log("Playback failed:", error);
+                        });
+                    }
+                }
+            }, { once: true });
 
             currentAudio.addEventListener('ended', () => {
                 btn.textContent = '▶ Play';
                 card.classList.remove('playing');
                 currentAudio = null;
                 currentCard = null;
+            });
+
+            currentAudio.addEventListener('error', () => {
+                btn.textContent = '❌ Error Loading';
+                btn.disabled = false;
+                console.log("Audio load error.");
             });
         });
     });
