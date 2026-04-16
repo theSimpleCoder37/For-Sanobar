@@ -242,11 +242,25 @@ section {
 .photo-card {
     background: rgba(26, 15, 46, 0.85);
     border: 1px solid var(--glass-border);
-    border-radius: 16px;
+    border-radius: 20px;
     padding: 0;
-    /* Removed backdrop-filter to ensure zero lag on images */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    overflow: hidden; 
+    overflow: hidden;
+    width: 100%;
+    max-width: 400px; /* Professional constraint */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.photo-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 0; /* Edge-to-edge for images */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    overflow: hidden; /* Ensure image corners are clipped by card radius */
 }
 
 .placeholder-img, .poster-placeholder {
@@ -274,15 +288,38 @@ section {
 .music-disk {
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, #333 0%, #111 100%);
+    background: repeating-radial-gradient(circle, #222 0%, #111 2px, #222 4px);
     border-radius: 50%;
-    box-shadow: 0 0 15px rgba(123, 44, 191, 0.3);
-    border: 8px solid #222;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border: 12px solid #111;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.8s ease, box-shadow 0.8s ease;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Sound Wave Ripple Effect */
+.music-disk::before {
+    content: '';
+    position: absolute;
+    top: -15px; left: -15px; right: -15px; bottom: -15px;
+    border: 2px solid var(--accent-light);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+/* Vinyl Reflection Shine */
+.music-disk::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, transparent 45%, rgba(255,255,255,0.1) 50%, transparent 55%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
 }
 
 .disk-center {
@@ -295,9 +332,19 @@ section {
 }
 
 .music-card.playing .music-disk {
-    animation: rotateDisk 10s linear infinite;
-    box-shadow: 0 0 30px var(--accent-primary);
-    border-color: var(--accent-primary);
+    animation: rotateDisk 12s linear infinite;
+    border-color: var(--accent-light);
+    box-shadow: 0 0 50px rgba(123, 44, 191, 0.4);
+    transform: scale(1.05);
+}
+
+.music-card.playing .music-disk::before {
+    animation: soundRipple 2s linear infinite;
+}
+
+@keyframes soundRipple {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.4); opacity: 0; }
 }
 
 .music-card.playing {
@@ -306,15 +353,14 @@ section {
 }
 
 @keyframes rotateDisk {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from { transform: rotate(0deg) scale(1.05); }
+    to { transform: rotate(360deg) scale(1.05); }
 }
 
 /* Dynamically handles block ratio according to image content safely */
 .photo-img {
     width: 100%;
-    height: auto;
-    max-height: 70vh; /* Premium mobile constraint */
+    aspect-ratio: 4 / 5; /* Forces professional consistency */
     object-fit: cover; 
     display: block;
     transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -572,6 +618,7 @@ section {
     padding-bottom: 2rem;
 }
 
+
 /* ---------------- New Dual-Chat System ---------------- */
 .chat-section {
     width: 100%;
@@ -730,12 +777,12 @@ section {
     outline: none;
     transition: all 0.3s ease;
 }
+
 .reply-input-container textarea:focus {
     border-color: var(--accent-light);
     box-shadow: 0 0 10px rgba(123, 44, 191, 0.2);
     background: rgba(0,0,0, 0.4);
 }
-
 
 /* Observers / Fade-in Transitions - OPTIMIZED */
 .fade-in-hidden {
