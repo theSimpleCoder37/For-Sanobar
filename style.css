@@ -188,7 +188,7 @@ section {
 }
 
 /* Glassmorphism Cards */
-.photo-card, .music-card, .shayari-card, .dua-card {
+.music-card, .shayari-card, .dua-card {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
@@ -196,6 +196,17 @@ section {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.photo-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 0; /* Edge-to-edge for images */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    overflow: hidden; /* Ensure image corners are clipped by card radius */
 }
 
 .placeholder-img, .poster-placeholder {
@@ -263,18 +274,20 @@ section {
 .photo-img {
     width: 100%;
     height: auto;
-    max-height: 60vh; 
-    object-fit: contain; /* Changed to contain for "ratio according to images" as requested */
-    border-radius: 12px;
-    background: rgba(0,0,0,0.2);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    aspect-ratio: 4 / 5;
+    object-fit: cover; 
     display: block;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-caption {
+    padding: 1.25rem 1rem;
+    background: rgba(123, 44, 191, 0.03); 
+    border-top: 1px solid var(--glass-border);
 }
 
 .photo-card:hover .photo-img {
-    transform: scale(1.02);
+    transform: scale(1.05);
 }
 
 /* Pie Chart Section - Optimized */
@@ -387,10 +400,10 @@ section {
     border: 1px solid var(--glass-border);
     -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
 }
-.message-block::-webkit-scrollbar {
+.custom-scroll::-webkit-scrollbar {
     width: 4px;
 }
-.message-block::-webkit-scrollbar-thumb {
+.custom-scroll::-webkit-scrollbar-thumb {
     background: linear-gradient(to bottom, var(--accent-primary), var(--accent-light));
     border-radius: 10px;
 }
@@ -446,6 +459,76 @@ section {
 .ending-text {
     margin-top: 4rem;
     padding-bottom: 2rem;
+}
+
+/* Reply Section Styles */
+.reply-section {
+    width: 100%;
+    max-width: 500px;
+    margin: 3rem auto 0;
+    text-align: left;
+    background: rgba(26, 15, 46, 0.3);
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+}
+
+#reply-text {
+    width: 100%;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--text-main);
+    padding: 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    resize: none;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#reply-text:focus {
+    border-color: var(--accent-light);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 15px rgba(199, 125, 255, 0.1);
+}
+
+#replies-display {
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+#replies-display::-webkit-scrollbar {
+    width: 4px;
+}
+#replies-display::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 4px;
+}
+
+.reply-item {
+    background: rgba(123, 44, 191, 0.1);
+    border: 1px solid var(--glass-border);
+    padding: 1rem;
+    border-radius: 12px;
+    animation: slideInUp 0.4s ease-out;
+}
+
+.reply-time {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    margin-top: 8px;
+    display: block;
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Observers / Fade-in Transitions - OPTIMIZED */
