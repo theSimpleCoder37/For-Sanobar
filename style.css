@@ -20,17 +20,13 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Strict lock on horizontal jitter */
+    overflow-x: hidden; /* THE LOCK: Prevents horizontal scroll entirely */
     position: relative;
-}
-
-body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     font-family: 'Outfit', sans-serif;
     min-height: 100vh;
     scroll-behavior: smooth;
-    /* Hide scrollbar for a cleaner mobile app look */
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -39,61 +35,63 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-/* Base Gradient Background - Fixed to viewport */
-body::before {
-    content: '';
+/* --- PERSISTENT BACKGROUND SYSTEM (Mobile Optimized) --- */
+.background-canvas {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle at 50% 50%, var(--bg-purple) 0%, var(--bg-dark) 100%);
-    z-index: -3;
-    pointer-events: none;
-}
-
-/* Bokeh Glow Blobs */
-.glow-blob {
-    position: fixed;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(123, 44, 191, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    z-index: -2;
-    pointer-events: none;
-    filter: blur(50px);
-    animation: moveBlob 20s infinite alternate;
-}
-
-.blob-1 { top: -100px; left: -100px; animation-duration: 25s; }
-.blob-2 { bottom: -100px; right: -100px; animation-duration: 30s; background: radial-gradient(circle, rgba(199, 125, 255, 0.1) 0%, transparent 70%); }
-
-@keyframes moveBlob {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(100px, 50px) scale(1.2); }
-}
-
-#particles-container {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: -1;
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
+    background: #0d0d12; 
+    background: linear-gradient(to bottom, #150a2a, #0b0b0f);
+    z-index: -10;
     pointer-events: none;
     overflow: hidden;
 }
 
-#progress-bar-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 6px; /* Slightly thicker for visibility on mobile */
-    background: rgba(123, 44, 191, 0.1);
-    z-index: 20000; /* Extremely high z-index to stay above everything */
+.bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    /* Removed filter: blur(80px); for ultra fast scroll */
+    opacity: 0.8;
+    will-change: transform;
+    animation: slowGlow 25s infinite alternate ease-in-out;
 }
 
-#progress-bar {
-    height: 100%;
-    background: linear-gradient(to right, var(--accent-primary), var(--accent-light));
-    width: 0%;
-    box-shadow: 0 0 10px var(--accent-light);
-    transition: width 0.2s ease-out;
+.orb-1 {
+    width: 60vh; height: 60vh;
+    background: radial-gradient(circle, #3c096c 0%, transparent 60%);
+    top: -10%; left: -10%;
+    animation-duration: 35s;
+}
+
+.orb-2 {
+    width: 50vh; height: 50vh;
+    background: radial-gradient(circle, #5a189a 0%, transparent 60%);
+    bottom: -5%; right: -5%;
+    animation-duration: 28s;
+}
+
+.orb-3 {
+    width: 45vh; height: 45vh;
+    background: radial-gradient(circle, #240046 0%, transparent 60%);
+    top: 30%; right: 10%;
+    animation-delay: -5s;
+}
+
+@keyframes slowGlow {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    100% { transform: translate3d(40px, 60px, 0) scale(1.2); }
+}
+
+/* Cleanup for absolute clarity */
+body::before, body::after, .glow-blob { display: none !important; }
+
+#particles-container {
+    position: fixed;
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
+    z-index: -5;
+    pointer-events: none;
+    overflow: hidden;
 }
 
 .scroll-container {
@@ -104,16 +102,20 @@ body::before {
 section {
     position: relative;
     min-height: 100dvh; 
-    width: 100%; 
+    width: 100%; /* Better than 100vw for mobile compatibility */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 4rem 1.5rem;
+    padding: 4rem 1.25rem; /* Slightly reduced padding to avoid edge push */
     overflow: hidden; 
     contain: layout style; 
-    content-visibility: auto; /* Optimization: Skips rendering off-screen sections */
-    contain-intrinsic-size: 100vh 100vw;
+}
+
+.content-root {
+    width: 100%;
+    overflow-x: hidden;
+    /* Removed catastrophic will-change hardware acceleration that crashes mobile GPUs causing black screens */
 }
 
 .content-wrapper {
@@ -161,7 +163,7 @@ section {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 10px rgba(199, 125, 255, 0.4));
+    /* Removed drop-shadow for absolute performance */
     animation: textShine 5s linear infinite;
 }
 
@@ -183,7 +185,6 @@ section {
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    will-change: transform;
     overflow: hidden;
     -webkit-tap-highlight-color: transparent;
 }
@@ -213,31 +214,23 @@ section {
 /* Glassmorphism Cards */
 .music-card, .shayari-card, .dua-card, .glass-card {
     position: relative;
-    background: rgba(26, 15, 46, 0.95); /* Solid glass for 100% performance on mobile */
+    background: rgba(26, 15, 46, 0.85); /* Slightly darker, NO BLUR for max speed */
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 1.5rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    /* Removed backdrop-filter: blur(5px); for absolute max performance */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
-/* Re-enable blur only for powerful Desktop systems */
-@media (min-width: 1025px) {
-    .music-card, .shayari-card, .dua-card, .glass-card {
-        background: rgba(26, 15, 46, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-    }
-}
-
-/* Subtle inner glow for premium look */
+/* Optimized Card logic */
 .music-card::before, .shayari-card::before, .dua-card::before, .glass-card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     border-radius: inherit;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 40%);
     pointer-events: none;
 }
 
@@ -247,14 +240,13 @@ section {
 }
 
 .photo-card {
-    background: var(--glass-bg);
+    background: rgba(26, 15, 46, 0.85);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 0; /* Edge-to-edge for images */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    overflow: hidden; /* Ensure image corners are clipped by card radius */
+    padding: 0;
+    /* Removed backdrop-filter to ensure zero lag on images */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden; 
 }
 
 .placeholder-img, .poster-placeholder {
@@ -357,12 +349,11 @@ section {
         #5e3c88 75% 90%, 
         #2a1b41 90% 100%
     );
-    box-shadow: 0 0 40px rgba(123, 44, 191, 0.4);
+    /* Removed heavy box-shadow filter */
     transform-origin: center;
     opacity: 0; 
     transform: scale(0.5) rotate(-90deg);
-    transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 1s ease;
-    will-change: transform, opacity;
+    transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), opacity 1s ease;
 }
 
 .pie-chart.start-chart-anim {
@@ -413,7 +404,6 @@ section {
     transform: translate3d(-30px, 0, 0);
     opacity: 0;
     transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    will-change: transform, opacity;
 }
 .personality-list li.visible {
     transform: translate3d(0, 0, 0);
@@ -716,6 +706,5 @@ section {
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
-    will-change: transform;
     mix-blend-mode: screen;
 }

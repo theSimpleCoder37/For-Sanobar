@@ -12,20 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
             passwordOverlay.style.display = 'none';
             mainContent.style.display = 'block';
             
-            // Recalculate Scroll Height for Progress Bar after layout finishes
+            // Trigger professional intro transition
             requestAnimationFrame(() => {
                 mainContent.style.opacity = '1';
                 mainContent.style.transform = 'scale(1)';
-                
-                // Force a scroll recalculation
-                window.dispatchEvent(new Event('scroll'));
             });
             
-            setTimeout(() => {
-                initMainApp();
-                const firstSection = document.getElementById('s1-opening');
-                if (firstSection) firstSection.classList.add('fade-in-visible');
-            }, 300);
+            // Re-trigger global initialization
+            initMainApp();
+            
+            const firstSection = document.getElementById('s1-opening');
+            if (firstSection) firstSection.classList.add('fade-in-visible');
         } else {
             passwordError.style.display = 'block';
             passwordInput.value = '';
@@ -39,9 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function initMainApp() {
-        // 1. Core Systems
+        // 1. Core Systems (Optimized Restore: Very low count for perfect performance)
         createParticles();
-        createOrbs();
 
         // 2. Start Button Navigation
         const startBtn = document.getElementById('start-btn');
@@ -63,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const observerOptions = {
             root: null,
             rootMargin: '0px 0px -20px 0px',
-            threshold: 0.05 // More sensitive for mobile
+            threshold: 0 // Trigger as soon as 1 pixel is visible
         };
 
         const sectionObserver = new IntersectionObserver((entries, observer) => {
@@ -84,14 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         const chart = entry.target.querySelector('.pie-chart');
                         if (chart) setTimeout(() => chart.classList.add('start-chart-anim'), 300);
                     }
-                    
-                    // Optimization: Remove performance hints after animation to free memory
-                    setTimeout(() => {
-                        entry.target.style.willChange = 'auto';
-                        const children = entry.target.querySelectorAll('.photo-card, .music-card, .shayari-card');
-                        children.forEach(c => c.style.willChange = 'auto');
-                    }, 2000);
-                    
                     observer.unobserve(entry.target);
                 }
             });
@@ -100,47 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const sections = document.querySelectorAll('.fade-in-hidden');
         sections.forEach(section => {
             sectionObserver.observe(section);
-            // Instant check for mobile: if section is already in view after unlocking
-            const rect = section.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom >= 0) {
-                section.classList.add('fade-in-visible');
-                // Trigger children
-                const children = section.querySelectorAll('.photo-card, .music-card, .shayari-card, .personality-list li');
-                children.forEach((child, index) => {
-                    setTimeout(() => {
-                        child.classList.add('visible');
-                        child.style.opacity = "1";
-                        child.style.transform = "translate3d(0,0,0)";
-                    }, 100 * index);
-                });
-                if (section.id === 's2-chart') {
-                    const chart = section.querySelector('.pie-chart');
-                    if (chart) setTimeout(() => chart.classList.add('start-chart-anim'), 300);
-                }
-            }
         });
 
         // 5. Robust Audio Controller
         setupAudio();
 
-        // 6. Optimized Scroll Progress Bar (Restored & Smooth)
-        const progressBar = document.getElementById('progress-bar');
-        let ticking = false;
-        
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    const scrolled = (winScroll / height) * 100;
-                    if (progressBar) progressBar.style.width = scrolled + "%";
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-
-        // 7. Cursor Glow Trailer (Desktop Only)
+        // 6. Cursor Glow Trailer (Desktop Only)
         if (window.innerWidth > 1024) {
             const glow = document.createElement('div');
             glow.className = 'cursor-glow';
@@ -149,50 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 glow.style.transform = `translate3d(${e.clientX - 150}px, ${e.clientY - 150}px, 0)`;
             });
         }
-
-        // 8. Professional 3D Card Tilt (Subtle & Smooth)
-        const interactiveCards = document.querySelectorAll('.music-card, .shayari-card, .photo-card, .dua-card');
-        
-        const handleMove = (e, card) => {
-            const rect = card.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            // Subtle, professional values
-            const rotateX = (y - centerY) / 25;
-            const rotateY = (centerX - x) / 25;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px) scale(1.01)`;
-        };
-
-        const handleReset = (card) => {
-            card.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)`;
-        };
-
-        interactiveCards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                card.style.transition = 'none'; // Instant response while moving
-                handleMove(e, card);
-            });
-            card.addEventListener('mouseleave', () => handleReset(card));
-            
-            card.addEventListener('touchstart', () => {
-                card.style.transition = 'none';
-            }, { passive: true });
-            
-            card.addEventListener('touchmove', (e) => {
-                handleMove(e, card);
-            }, { passive: true });
-            
-            card.addEventListener('touchend', () => handleReset(card));
-        });
     }
 
     function setupAudio() {
@@ -289,23 +198,24 @@ function createParticles() {
     if(!container) return;
 
     const isMobile = window.innerWidth <= 768;
-    const numParticles = isMobile ? 8 : 25; // Far fewer particles for mobile speed
+    const numParticles = isMobile ? 6 : 15; 
 
     for (let i = 0; i < numParticles; i++) {
         const particle = document.createElement('div');
-        const size = Math.random() * 3 + 1;
+        const size = 2; // Fixed small size for fastest rendering
         particle.style.position = 'absolute';
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
         particle.style.background = '#c77dff';
         particle.style.borderRadius = '50%';
-        particle.style.left = `${Math.random() * 100}vw`;
-        particle.style.top = `${Math.random() * 100}vh`;
+        particle.style.left = `${Math.random() * 90}vw`; // Stay within screen
+        particle.style.top = `${Math.random() * 90}vh`; // Stay within screen
         
         particle.style.willChange = 'transform';
-        const duration = Math.random() * 10 + 15;
+        const duration = Math.random() * 10 + 20; // Even slower for elegance
         const delay = Math.random() * -20; 
-        particle.style.animation = `flowStream ${duration}s linear ${delay}s infinite`;
+        // Safer path: 0 to 10% movement only to stay within screen
+        particle.style.animation = `flowSafe ${duration}s linear ${delay}s infinite alternate`;
         container.appendChild(particle);
     }
 
@@ -313,52 +223,12 @@ function createParticles() {
         const styleSheet = document.createElement('style');
         styleSheet.id = 'particle-styles';
         styleSheet.innerText = `
-            @keyframes flowStream {
-                0% { transform: translate3d(-10vw, -10vh, 0); opacity: 0; }
-                10% { opacity: 0.4; }
-                90% { opacity: 0.4; }
-                100% { transform: translate3d(110vw, 110vh, 0); opacity: 0; }
+            @keyframes flowSafe {
+                0% { transform: translate3d(0, 0, 0); opacity: 0; }
+                50% { opacity: 0.4; }
+                100% { transform: translate3d(20px, 40px, 0); opacity: 0; }
             }
         `;
         document.head.appendChild(styleSheet);
     }
 }
-
-// NEW: Flowing Orbs System (Pleasing & Creative)
-function createOrbs() {
-    // Optimization: Skip orbs on mobile to ensure buttery smooth scroll
-    if(window.innerWidth <= 768) return;
-
-    const main = document.getElementById('main-content');
-    if(!main) return;
-    
-    // Create 5 soft flowing orbs
-    for (let i = 0; i < 5; i++) {
-        const orb = document.createElement('div');
-        orb.className = 'orb';
-        const size = Math.random() * 200 + 150;
-        orb.style.width = `${size}px`;
-        orb.style.height = `${size}px`;
-        orb.style.left = `${Math.random() * 80}vw`;
-        orb.style.top = `${Math.random() * 80}vh`;
-        orb.style.animationDuration = `${Math.random() * 15 + 15}s`;
-        orb.style.animationDelay = `${Math.random() * 5}s`;
-        main.appendChild(orb);
-    }
-}
-
-// Optimized Scroll Progress (Throttled)
-let lastScrollTime = 0;
-window.addEventListener('scroll', () => {
-    const now = Date.now();
-    if (now - lastScrollTime < 30) return; // ~30fps throttle
-    lastScrollTime = now;
-
-    const progressBar = document.getElementById('progress-bar');
-    if (progressBar) {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        progressBar.style.width = scrolled + "%";
-    }
-}, { passive: true });
