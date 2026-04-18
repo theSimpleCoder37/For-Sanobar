@@ -16,11 +16,18 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Strict lock on horizontal jitter */
+    position: relative;
+}
+
 body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     font-family: 'Outfit', sans-serif;
-    overflow-x: hidden; 
     min-height: 100vh;
     scroll-behavior: smooth;
     /* Hide scrollbar for a cleaner mobile app look */
@@ -76,9 +83,9 @@ body::before {
     top: 0;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 6px; /* Slightly thicker for visibility on mobile */
     background: rgba(123, 44, 191, 0.1);
-    z-index: 1000;
+    z-index: 20000; /* Extremely high z-index to stay above everything */
 }
 
 #progress-bar {
@@ -97,14 +104,16 @@ body::before {
 section {
     position: relative;
     min-height: 100dvh; 
-    width: 100vw;
+    width: 100%; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 4rem 1.5rem;
     overflow: hidden; 
-    contain: layout style; /* Performance: Isolates section rendering */
+    contain: layout style; 
+    content-visibility: auto; /* Optimization: Skips rendering off-screen sections */
+    contain-intrinsic-size: 100vh 100vw;
 }
 
 .content-wrapper {
@@ -204,15 +213,22 @@ section {
 /* Glassmorphism Cards */
 .music-card, .shayari-card, .dua-card, .glass-card {
     position: relative;
-    background: var(--glass-bg);
+    background: rgba(26, 15, 46, 0.95); /* Solid glass for 100% performance on mobile */
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 1.5rem;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+/* Re-enable blur only for powerful Desktop systems */
+@media (min-width: 1025px) {
+    .music-card, .shayari-card, .dua-card, .glass-card {
+        background: rgba(26, 15, 46, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
 }
 
 /* Subtle inner glow for premium look */

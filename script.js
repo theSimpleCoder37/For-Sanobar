@@ -12,17 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
             passwordOverlay.style.display = 'none';
             mainContent.style.display = 'block';
             
-            // Trigger professional intro transition
+            // Recalculate Scroll Height for Progress Bar after layout finishes
             requestAnimationFrame(() => {
                 mainContent.style.opacity = '1';
                 mainContent.style.transform = 'scale(1)';
+                
+                // Force a scroll recalculation
+                window.dispatchEvent(new Event('scroll'));
             });
             
-            // Re-trigger global initialization
-            initMainApp();
-            
-            const firstSection = document.getElementById('s1-opening');
-            if (firstSection) firstSection.classList.add('fade-in-visible');
+            setTimeout(() => {
+                initMainApp();
+                const firstSection = document.getElementById('s1-opening');
+                if (firstSection) firstSection.classList.add('fade-in-visible');
+            }, 300);
         } else {
             passwordError.style.display = 'block';
             passwordInput.value = '';
@@ -59,8 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // 4. Intersection Observer for Fade-in & Staggered effects
         const observerOptions = {
             root: null,
-            rootMargin: '0px 0px -50px 0px',
-            threshold: 0.1
+            rootMargin: '0px 0px -20px 0px',
+            threshold: 0.05 // More sensitive for mobile
         };
 
         const sectionObserver = new IntersectionObserver((entries, observer) => {
@@ -81,6 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         const chart = entry.target.querySelector('.pie-chart');
                         if (chart) setTimeout(() => chart.classList.add('start-chart-anim'), 300);
                     }
+                    
+                    // Optimization: Remove performance hints after animation to free memory
+                    setTimeout(() => {
+                        entry.target.style.willChange = 'auto';
+                        const children = entry.target.querySelectorAll('.photo-card, .music-card, .shayari-card');
+                        children.forEach(c => c.style.willChange = 'auto');
+                    }, 2000);
+                    
                     observer.unobserve(entry.target);
                 }
             });
@@ -112,13 +123,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // 5. Robust Audio Controller
         setupAudio();
 
-        // 6. Scroll Progress Bar (Restored)
+        // 6. Optimized Scroll Progress Bar (Restored & Smooth)
         const progressBar = document.getElementById('progress-bar');
+        let ticking = false;
+        
         window.addEventListener('scroll', () => {
-            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            if (progressBar) progressBar.style.width = scrolled + "%";
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    const scrolled = (winScroll / height) * 100;
+                    if (progressBar) progressBar.style.width = scrolled + "%";
+                    ticking = false;
+                });
+                ticking = true;
+            }
         }, { passive: true });
 
         // 7. Cursor Glow Trailer (Desktop Only)
@@ -270,7 +289,7 @@ function createParticles() {
     if(!container) return;
 
     const isMobile = window.innerWidth <= 768;
-    const numParticles = isMobile ? 15 : 25; 
+    const numParticles = isMobile ? 8 : 25; // Far fewer particles for mobile speed
 
     for (let i = 0; i < numParticles; i++) {
         const particle = document.createElement('div');
@@ -307,6 +326,9 @@ function createParticles() {
 
 // NEW: Flowing Orbs System (Pleasing & Creative)
 function createOrbs() {
+    // Optimization: Skip orbs on mobile to ensure buttery smooth scroll
+    if(window.innerWidth <= 768) return;
+
     const main = document.getElementById('main-content');
     if(!main) return;
     
