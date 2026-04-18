@@ -13,284 +13,307 @@
 </head>
 
 <body>
-    <div id="particles-container"></div>
-    <div class="glow-blob blob-1"></div>
-    <div class="glow-blob blob-2"></div>
-    <div id="progress-bar-container">
-        <div id="progress-bar"></div>
+    <!-- Password Protection Overlay -->
+    <div id="password-overlay" class="password-screen">
+        <div class="password-box glass-card">
+            <h2 class="glow-text mb-4">A Private Space… 💜</h2>
+            <p class="body-text mb-2" style="font-size: 0.9rem;">Please enter the 4-digit code to unlock.</p>
+            <p class="hint-text mb-6">Hint: My Bday + Ur Bday ✨</p>
+            <div class="input-group">
+                <input type="password" id="password-input" maxlength="4" placeholder="••••" autocomplete="off">
+            </div>
+            <button id="unlock-btn" class="primary-btn mt-6">Unlock ✨</button>
+            <p id="password-error" class="error-msg mt-3" style="display: none;">Incorrect code. Try again! 🐧</p>
+        </div>
     </div>
 
-    <main class="scroll-container">
+    <!-- Hidden Content Root -->
+    <div id="main-content" class="content-root" style="display: none; opacity: 0; transform: scale(0.98); transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);">
+        <div id="particles-container"></div>
+        <div class="glow-blob blob-1"></div>
+        <div class="glow-blob blob-2"></div>
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
 
-        <!-- Section 1: Opening -->
-        <section id="s1-opening" class="glass-section center-content fade-in-hidden">
-            <div class="content-wrapper">
-                <h1 class="elegant-text glow-text">Assalamualaikum… 💜</h1>
-                <h2 class="sub-title">My Best Friend</h2>
-                <p class="body-text mt-4">This is only for my Bhandhari bestfriend,</p>
-                <h3 class="highlight-name glow-text mt-2">Sanobar</h3>
+        <main class="scroll-container">
 
-                <button id="start-btn" class="primary-btn mt-8 pulse-anim">Start</button>
-            </div>
-        </section>
+            <!-- Section 1: Opening -->
+            <section id="s1-opening" class="glass-section center-content fade-in-hidden">
+                <div class="content-wrapper">
+                    <h1 class="elegant-text glow-text">Assalamualaikum… 💜</h1>
+                    <h2 class="sub-title">My Best Friend</h2>
+                    <p class="body-text mt-4">This is only for my Bhandhari bestfriend,</p>
+                    <h3 class="highlight-name glow-text mt-2">Sanobar</h3>
 
-        <!-- Section 2: Pie Chart -->
-        <section id="s2-chart" class="glass-section center-content fade-in-hidden">
-            <div class="content-wrapper w-full">
-                <h2 class="section-title mb-6">A small truth about my daily life…</h2>
-
-                <div class="pie-chart-container">
-                    <div class="pie-chart"></div>
-                    <!-- Legend -->
-                    <div class="legend">
-                        <div class="legend-item"><span class="color-box color-missing"></span> Missing You 💜 (Largest)
-                        </div>
-                        <div class="legend-item"><span class="color-box color-studying"></span> Studying 📚</div>
-                        <div class="legend-item"><span class="color-box color-sleeping"></span> Sleeping 😴</div>
-                        <div class="legend-item"><span class="color-box color-eating"></span> Eating 🍜</div>
-                    </div>
+                    <button id="start-btn" class="primary-btn mt-8 pulse-anim">Start</button>
                 </div>
+            </section>
 
-                <p class="body-text italic mt-8 text-center px-4">
-                    "No matter what I do…<br>you somehow stay in every part of my day."
-                </p>
-                <div class="scroll-indicator">↓</div>
-            </div>
-        </section>
+            <!-- Section 2: Pie Chart -->
+            <section id="s2-chart" class="glass-section center-content fade-in-hidden">
+                <div class="content-wrapper w-full">
+                    <h2 class="section-title mb-6">A small truth about my daily life…</h2>
 
-        <!-- Section 3: Photos & Personality -->
-        <section id="s3-photos" class="glass-section center-content fade-in-hidden">
-            <div class="content-wrapper w-full py-10 scrollable-content">
-
-                <div class="photo-card mb-6">
-                    <img class="photo-img" src="images/image1-smile.jpg" alt="Childhood Smile">
-                    <div class="card-caption">
-                        <p class="caption text-sm italic opacity-80 text-center">"That same big smile… still my
-                            favorite thing in the world ✨</p>
-                    </div>
-                </div>
-
-                <div class="photo-card mb-10">
-                    <img class="photo-img" src="images/image2-eyes.jpg" alt="Beautiful Eyes">
-                    <div class="card-caption">
-                        <p class="caption text-sm italic opacity-80 text-center">It's true: Jitna bhi dekhun, Dil bhar
-                            na paaye 💘</p>
-                    </div>
-                </div>
-
-                <h2 class="section-title glow-text mb-6">Her Core…</h2>
-                <ul class="personality-list">
-                    <li>Talking 🗣️</li>
-                    <li>Sleeping 😴</li>
-                    <li>Cute (always) 🩷</li>
-                    <li>Intelligent (thodi si) 🧠</li>
-                    <li>Ignoring me 😒</li>
-                    <li>Even busier than Modi ji 😅</li>
-                </ul>
-                <div class="scroll-indicator mt-6">↓</div>
-            </div>
-        </section>
-
-        <!-- Section 4: Music Section -->
-        <section id="s4-music" class="glass-section center-content fade-in-hidden">
-            <div class="content-wrapper w-full">
-                <h2 class="section-title mb-8">Some songs… that feel like you</h2>
-
-                <div class="music-card mb-6" data-audio="songs/song1.mp3">
-                    <div class="poster-placeholder">
-                        <div class="music-disk">
-                            <span class="disk-center"></span>
+                    <div class="pie-chart-container">
+                        <div class="pie-chart"></div>
+                        <!-- Legend -->
+                        <div class="legend">
+                            <div class="legend-item"><span class="color-box color-missing"></span> Missing You 💜
+                                (Largest)
+                            </div>
+                            <div class="legend-item"><span class="color-box color-studying"></span> Studying 📚</div>
+                            <div class="legend-item"><span class="color-box color-sleeping"></span> Sleeping 😴</div>
+                            <div class="legend-item"><span class="color-box color-eating"></span> Eating 🍜</div>
                         </div>
                     </div>
-                    <div class="music-info mt-4">
-                        <h3 class="song-title">Iraaday 💜</h3>
-                        <button class="play-btn my-3">▶ Play</button>
-                    </div>
-                </div>
 
-                <div class="music-card" data-audio="songs/song2.mp3">
-                    <div class="poster-placeholder">
-                        <div class="music-disk">
-                            <span class="disk-center"></span>
+                    <p class="body-text italic mt-8 text-center px-4">
+                        "No matter what I do…<br>you somehow stay in every part of my day."
+                    </p>
+                    <div class="scroll-indicator">↓</div>
+                </div>
+            </section>
+
+            <!-- Section 3: Photos & Personality -->
+            <section id="s3-photos" class="glass-section center-content fade-in-hidden">
+                <div class="content-wrapper w-full py-10 scrollable-content">
+
+                    <div class="photo-card mb-6">
+                        <img class="photo-img" src="images/image1-smile.jpg" alt="Childhood Smile">
+                        <div class="card-caption">
+                            <p class="caption text-sm italic opacity-80 text-center">"That same big smile… still my
+                                favorite thing in the world ✨</p>
                         </div>
                     </div>
-                    <div class="music-info mt-4">
-                        <h3 class="song-title">Aankhon se batana ✨</h3>
-                        <button class="play-btn my-3">▶ Play</button>
+
+                    <div class="photo-card mb-10">
+                        <img class="photo-img" src="images/image2-eyes.jpg" alt="Beautiful Eyes">
+                        <div class="card-caption">
+                            <p class="caption text-sm italic opacity-80 text-center">It's true: Jitna bhi dekhun, Dil
+                                bhar
+                                na paaye 💘</p>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title glow-text mb-6">Her Core…</h2>
+                    <ul class="personality-list">
+                        <li>Talking 🗣️</li>
+                        <li>Sleeping 😴</li>
+                        <li>Cute (always) 🩷</li>
+                        <li>Intelligent (thodi si) 🧠</li>
+                        <li>Ignoring me 😒</li>
+                        <li>Even busier than Modi ji 😅</li>
+                    </ul>
+                    <div class="scroll-indicator mt-6">↓</div>
+                </div>
+            </section>
+
+            <!-- Section 4: Music Section -->
+            <section id="s4-music" class="glass-section center-content fade-in-hidden">
+                <div class="content-wrapper w-full">
+                    <h2 class="section-title mb-8">Some songs… that feel like you</h2>
+
+                    <div class="music-card mb-6" data-audio="songs/song1.mp3">
+                        <div class="poster-placeholder">
+                            <div class="music-disk">
+                                <span class="disk-center"></span>
+                            </div>
+                        </div>
+                        <div class="music-info mt-4">
+                            <h3 class="song-title">Iraaday 💜</h3>
+                            <button class="play-btn my-3">▶ Play</button>
+                        </div>
+                    </div>
+
+                    <div class="music-card" data-audio="songs/song2.mp3">
+                        <div class="poster-placeholder">
+                            <div class="music-disk">
+                                <span class="disk-center"></span>
+                            </div>
+                        </div>
+                        <div class="music-info mt-4">
+                            <h3 class="song-title">Aankhon se batana ✨</h3>
+                            <button class="play-btn my-3">▶ Play</button>
+                        </div>
+                    </div>
+                    <div class="scroll-indicator mt-6">↓</div>
+                </div>
+            </section>
+
+            <!-- Section 5: Shayari Section -->
+            <section id="s5-shayari" class="glass-section center-content fade-in-hidden">
+                <div class="content-wrapper w-full px-4">
+                    <h2 class="section-title mb-8">For you… in words I couldn’t say directly</h2>
+
+                    <div class="shayari-card float-anim mb-6">
+                        <div class="quote-mark">“</div>
+                        <p class="shayari-text">
+                            Ek baar acche se baat karke toh dekho,<br>
+                            "Tum nahi samjhoge se"<br>
+                            "Tum hi samajhte ho yaar mujhe",<br>
+                            Na ban jaau to kehna.. 💜
+                        </p>
+                        <div class="quote-mark text-right">”</div>
+                    </div>
+
+                    <div class="shayari-card float-anim-delayed">
+                        <div class="quote-mark">“</div>
+                        <p class="shayari-text">
+                            Lambi baaton se mujhe koi matlab nahi<br>
+                            Mujhe to unka "Start Penguin" bolna hi kamal lagta hai..💜<br>
+                        </p>
+                        <div class="quote-mark text-right">”</div>
+                    </div>
+                    <div class="scroll-indicator mt-8">↓</div>
+                </div>
+            </section>
+
+            <!-- Section 6: Final Message -->
+            <section id="s6-message" class="glass-section center-content fade-in-hidden">
+                <div class="content-wrapper w-full px-4">
+                    <h2 class="section-title glow-text mb-6">Something I really want to say…</h2>
+
+                    <div class="message-block custom-scroll">
+                        <p class="body-text">
+                            Hey, please agar ho sake to aa jaana ghar par.<br>
+                            And thank you again for being with me till now.<br>
+                            <br>
+                            Aur kabhi time mile to website check karte rehna, maine tere liye abhi uspar lock bhi laga diya hai, sirf tu hi use khol sakti hai.<br>
+                            <br>
+                            Teri childhood wali photo mein tu kitni cute lag rahi thi… waise abhi bhi utni hi lagti hai 😅<br>
+                            Aur tu songs sunti hai na jo main upar add karta hoon?<br>
+                            <br>
+                            Aur mehendi kitni seekh li ab tak? 18 designs ke upar ho gaye na? Har baar solar system hi ban jaata hai kya 😂<br>
+                            Achhe se practice karti reh, aur naye designs YouTube se seekh. Fabiha ke taali wale haath par try karti rehna.<br>
+                            <br>
+                            Aur tabiyat theek hai na teri? Aur please aisi marne wali baatein mat kiya kar, samjhi?<br>
+                            Ghar par koi kuch bhi bole, to sun liya kar aur sab Allah par chhod diya kar.<br>
+                            Aur agar kabhi kisi se ulti baat ho bhi jaaye, to itna tension mat liya kar, baad mein unse hansi mazaak karke sab theek kar lene ka.<br>
+                            <br>
+                            Main jaanta hoon tu achhi hai sabse, bas kabhi kabhi bura hone ki acting karti hai.<br>
+                            Kisi se umeed mat rakh, bas Allah se rakh, okay?<br>
+                            <br>
+                            Baaki ka lecture phir kabhi 😄<br>
+                            Khush aur hansti rehti reh, kyunki koi aur bhi hai jo tere wajah se khush aur hasta rehta hai...!<br>
+                            <br>
+                            Now you can reply your thoughts down below 💬
+                        </p>
+                    </div>
+
+                    <!-- Reply Section -->
+                    <div class="reply-section mt-8">
+                        <h3 class="sub-title mb-4" style="font-size: 1.2rem;">Leave a reply...</h3>
+                        <div class="reply-input-container">
+                            <textarea id="reply-text" placeholder="Write your thoughts here..."
+                                class="custom-scroll"></textarea>
+                            <button id="send-reply-btn" class="primary-btn mt-4">Send Reply ✨</button>
+                        </div>
+                        <div id="replies-display" class="mt-6 custom-scroll">
+                            <!-- Replies will show here -->
+                        </div>
+                    </div>
+
+                    <div class="scroll-indicator mt-6">↓</div>
+                </div>
+            </section>
+
+            <!-- Section 7: Dua & Ending -->
+            <section id="s7-dua" class="glass-section center-content fade-in-hidden">
+                <div class="content-wrapper w-full px-4 text-center">
+
+                    <h2 class="section-title mb-6" style="font-size: 3.5rem;">🤲</h2>
+                    <div class="dua-card mb-12">
+                        <p class="body-text text-lg leading-relaxed">
+                            Allah tumhara har gham halka kar de<br>
+                            tumhein har us cheez se bachaye jo tumhein takleef de,<br>
+                            aur tumhein woh sab de jo tum dil mein chup kar maangti ho. 💜"<br>
+                            <br>
+                            <span class="font-bold">Ameen.</span>
+                        </p>
+                    </div>
+
+                    <div class="ending-text fade-out-anim mt-12">
+                        <p class="italic opacity-80">
+                            This page ends here…<br>
+                            but you’ll always stay somewhere in my thoughts. 💜
+                        </p>
                     </div>
                 </div>
-                <div class="scroll-indicator mt-6">↓</div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Section 5: Shayari Section -->
-        <section id="s5-shayari" class="glass-section center-content fade-in-hidden">
-            <div class="content-wrapper w-full px-4">
-                <h2 class="section-title mb-8">For you… in words I couldn’t say directly</h2>
+        </main>
 
-                <div class="shayari-card float-anim mb-6">
-                    <div class="quote-mark">“</div>
-                    <p class="shayari-text">
-                        Ek baar acche se baat karke toh dekho,<br>
-                        "Tum nahi samjhoge se"<br>
-                        "Tum hi samajhte ho yaar mujhe",<br>
-                        Na ban jaau to kehna.. 💜
-                    </p>
-                    <div class="quote-mark text-right">”</div>
-                </div>
+        <!-- Firebase Configuration & Real-time Replies -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+            import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-                <div class="shayari-card float-anim-delayed">
-                    <div class="quote-mark">“</div>
-                    <p class="shayari-text">
-                        Lambi baaton se mujhe koi matlab nahi<br>
-                        Mujhe to unka "Start Penguin" bolna hi kamal lagta hai..💜<br>
-                    </p>
-                    <div class="quote-mark text-right">”</div>
-                </div>
-                <div class="scroll-indicator mt-8">↓</div>
-            </div>
-        </section>
+            // IMPORTANT: Replace this with YOUR actual Firebase Config from the Firebase Console
+            const firebaseConfig = {
+                apiKey: "AIzaSyDzcftZ3qMZJ86-WdrSioH9Y6Dt9JFeCAk",
+                authDomain: "web-app-511d5.firebaseapp.com",
+                projectId: "web-app-511d5",
+                storageBucket: "web-app-511d5.firebasestorage.app",
+                messagingSenderId: "885726215189",
+                appId: "1:885726215189:web:50bcacb46d43f823d5221c",
+                measurementId: "G-XZVGWR7FMM"
+            };
 
-        <!-- Section 6: Final Message -->
-        <section id="s6-message" class="glass-section center-content fade-in-hidden">
-            <div class="content-wrapper w-full px-4">
-                <h2 class="section-title glow-text mb-6">Something I really want to say…</h2>
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const repliesCol = collection(db, "replies");
 
-                <div class="message-block custom-scroll">
-                    <p class="body-text">
-                        Very important baat<br>
-                        <br>
-                        Kal 18th April, Saturday.<br>
-                        Meri ammi kal asar ke baad bahar jaare, aur I think direct 10–11 baje aayenge.<br>
-                        <br>
-                        So please kal tu mere ghar par aana. Asar ke baad kabhi bhi aa sakti ho. Main, ammi jab chali jayenge, tab WhatsApp DP par “Clear” likh kar rakhunga. Phir tu jab aana chahe, mujhe message kar dena.<br>
-                        <br>
-                        Please kal tu aana. Baad mein aisi opportunity nahi milti. Mujhe tere saath baith kar baat karni hai, saath mein hansi mazaak karna hai.<br>
-                        <br>
-                        Aur maine ek bahana bhi socha hai. Mere paas English ki 12th boards ki ek book hai, to tum ghar par bol kar aana ki Affan Bhaiya se wo book lene jaare ho. Wo book Adeeba ko use hogi, aur baad mein tum dono ko bhi use hogi.<br>
-                        <br>
-                        Please kal try karna. Phir baad mein mauka mile ya nahi, pata nahi.<br>
-                        <br>
-                        Fabiha se pooch lena wo aayengi kya, aur Sadiya ko mat lana please.<br>
-                        <br>
-                        Please Bhandhari, kal try karna aane ka.<br>
-                        <br>
-                        I will wait for you...<br>
-                        <br>
-                        Now you can reply your thoughts down below 💬
-                    </p>
-                </div>
+            const replyBtn = document.getElementById('send-reply-btn');
+            const replyInput = document.getElementById('reply-text');
+            const repliesDisplay = document.getElementById('replies-display');
 
-                <!-- Reply Section -->
-                <div class="reply-section mt-8">
-                    <h3 class="sub-title mb-4" style="font-size: 1.2rem;">Leave a reply...</h3>
-                    <div class="reply-input-container">
-                        <textarea id="reply-text" placeholder="Write your thoughts here..." class="custom-scroll"></textarea>
-                        <button id="send-reply-btn" class="primary-btn mt-4">Send Reply ✨</button>
-                    </div>
-                    <div id="replies-display" class="mt-6 custom-scroll">
-                        <!-- Replies will show here -->
-                    </div>
-                </div>
+            // Submit Reply
+            replyBtn.addEventListener('click', async () => {
+                const text = replyInput.value.trim();
+                if (!text) return; // Prevent empty replies
 
-                <div class="scroll-indicator mt-6">↓</div>
-            </div>
-        </section>
+                try {
+                    replyBtn.disabled = true;
+                    replyBtn.textContent = 'Sending...';
 
-        <!-- Section 7: Dua & Ending -->
-        <section id="s7-dua" class="glass-section center-content fade-in-hidden">
-            <div class="content-wrapper w-full px-4 text-center">
+                    await addDoc(repliesCol, {
+                        text: text,
+                        timestamp: serverTimestamp()
+                    });
 
-                <h2 class="section-title mb-6" style="font-size: 3.5rem;">🤲</h2>
-                <div class="dua-card mb-12">
-                    <p class="body-text text-lg leading-relaxed">
-                        Allah tumhara har gham halka kar de<br>
-                        tumhein har us cheez se bachaye jo tumhein takleef de,<br>
-                        aur tumhein woh sab de jo tum dil mein chup kar maangti ho. 💜"<br>
-                        <br>
-                        <span class="font-bold">Ameen.</span>
-                    </p>
-                </div>
+                    replyInput.value = ''; // Clear input
+                } catch (error) {
+                    console.error("Error adding reply: ", error);
+                    alert("Failed to send reply. Check your Firebase config!");
+                } finally {
+                    replyBtn.disabled = false;
+                    replyBtn.textContent = 'Send Reply ✨';
+                }
+            });
 
-                <div class="ending-text fade-out-anim mt-12">
-                    <p class="italic opacity-80">
-                        This page ends here…<br>
-                        but you’ll always stay somewhere in my thoughts. 💜
-                    </p>
-                </div>
-            </div>
-        </section>
+            // Real-time listener for replies
+            const q = query(repliesCol, orderBy("timestamp", "desc"));
+            onSnapshot(q, (snapshot) => {
+                repliesDisplay.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const replyItem = document.createElement('div');
+                    replyItem.className = 'reply-item';
 
-    </main>
+                    // Format date safely
+                    const date = data.timestamp ? data.timestamp.toDate().toLocaleString() : 'Just now';
 
-    <!-- Firebase Configuration & Real-time Replies -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // IMPORTANT: Replace this with YOUR actual Firebase Config from the Firebase Console
-        const firebaseConfig = {
-            apiKey: "AIzaSyDzcftZ3qMZJ86-WdrSioH9Y6Dt9JFeCAk",
-            authDomain: "web-app-511d5.firebaseapp.com",
-            projectId: "web-app-511d5",
-            storageBucket: "web-app-511d5.firebasestorage.app",
-            messagingSenderId: "885726215189",
-            appId: "1:885726215189:web:50bcacb46d43f823d5221c",
-            measurementId: "G-XZVGWR7FMM"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const repliesCol = collection(db, "replies");
-
-        const replyBtn = document.getElementById('send-reply-btn');
-        const replyInput = document.getElementById('reply-text');
-        const repliesDisplay = document.getElementById('replies-display');
-
-        // Submit Reply
-        replyBtn.addEventListener('click', async () => {
-            const text = replyInput.value.trim();
-            if (!text) return; // Prevent empty replies
-
-            try {
-                replyBtn.disabled = true;
-                replyBtn.textContent = 'Sending...';
-                
-                await addDoc(repliesCol, {
-                    text: text,
-                    timestamp: serverTimestamp()
-                });
-
-                replyInput.value = ''; // Clear input
-            } catch (error) {
-                console.error("Error adding reply: ", error);
-                alert("Failed to send reply. Check your Firebase config!");
-            } finally {
-                replyBtn.disabled = false;
-                replyBtn.textContent = 'Send Reply ✨';
-            }
-        });
-
-        // Real-time listener for replies
-        const q = query(repliesCol, orderBy("timestamp", "desc"));
-        onSnapshot(q, (snapshot) => {
-            repliesDisplay.innerHTML = '';
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                const replyItem = document.createElement('div');
-                replyItem.className = 'reply-item';
-                
-                // Format date safely
-                const date = data.timestamp ? data.timestamp.toDate().toLocaleString() : 'Just now';
-                
-                replyItem.innerHTML = `
+                    replyItem.innerHTML = `
                     <p class="body-text" style="font-size: 0.95rem;">${data.text}</p>
                     <span class="reply-time">${date}</span>
                 `;
-                repliesDisplay.appendChild(replyItem);
+                    repliesDisplay.appendChild(replyItem);
+                });
             });
-        });
-    </script>
+        </script>
+
+    </div> <!-- End main-content -->
 
     <script src="script.js"></script>
 </body>
