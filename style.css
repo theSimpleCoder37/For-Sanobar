@@ -572,23 +572,155 @@ section {
     padding-bottom: 2rem;
 }
 
-/* Reply Section Styles */
-.reply-section {
+/* ---------------- New Dual-Chat System ---------------- */
+.chat-section {
     width: 100%;
-    max-width: 500px;
     margin: 3rem auto 0;
-    text-align: left;
-    background: rgba(26, 15, 46, 0.3);
-    padding: 1.5rem;
-    border-radius: 16px;
-    border: 1px solid var(--glass-border);
 }
 
-#reply-text {
-    width: 100%;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.05);
+.chat-date-divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.chat-date-divider span {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.4rem 1.2rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: var(--accent-light);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.chat-display {
+    background: rgba(15, 10, 30, 0.4);
+    border-radius: 16px;
     border: 1px solid var(--glass-border);
+    padding: 1.5rem 1rem;
+    height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: inset 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.chat-message {
+    display: flex;
+    width: 100%;
+}
+
+/* Bhatari (User) Message: Left / Silver */
+.chat-message.msg-me {
+    justify-content: flex-start;
+}
+.chat-message.msg-me .msg-bubble {
+    background: linear-gradient(135deg, #e0e0e0, #bdbdbd);
+    color: #1a1a1a; /* Dark text for silver */
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Bhandhari (Sanobar) Message: Right / Purple */
+.chat-message.msg-sanobar {
+    justify-content: flex-end;
+}
+.chat-message.msg-sanobar .msg-bubble {
+    background: linear-gradient(135deg, #7b2cbf, #5a189a);
+    color: white;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 12px rgba(123, 44, 191, 0.3);
+}
+
+.msg-bubble {
+    max-width: 85%;
+    padding: 0.8rem 1.25rem;
+    border-radius: 18px;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    word-wrap: break-word;
+    animation: fadeInSlideUp 0.3s ease-out;
+}
+
+.msg-time {
+    display: block;
+    font-size: 0.7rem;
+    opacity: 0.6;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+.msg-me .msg-time {
+    text-align: left;
+    color: #1a1a1a;
+    opacity: 0.7;
+}
+.msg-sanobar .msg-time {
+    text-align: right;
+    color: rgba(255,255,255,0.8);
+}
+
+@keyframes fadeInSlideUp {
+    from { opacity: 0; transform: translateY(15px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Sender Input Boxes */
+.reply-input-container {
+    background: rgba(26, 15, 46, 0.5);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid var(--glass-border);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Bhatari (Silver) */
+.user-me {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(200,200,200,0.1) 0%, rgba(26,15,46,0.6) 100%);
+}
+.user-me .sender-label {
+    color: #e0e0e0;
+}
+.user-me .btn-me {
+    background: linear-gradient(135deg, #e0e0e0, #bdbdbd);
+    color: #1a1a1a;
+}
+
+/* Bhandhari (Purple) */
+.user-sanobar {
+    border-color: rgba(123, 44, 191, 0.4);
+    background: linear-gradient(135deg, rgba(123,44,191,0.15) 0%, rgba(26,15,46,0.6) 100%);
+}
+.user-sanobar .sender-label {
+    color: var(--accent-light);
+}
+.user-sanobar .btn-sanobar {
+    background: linear-gradient(135deg, #7b2cbf, #5a189a);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3);
+    border: none;
+}
+.user-sanobar .btn-sanobar:active {
+    transform: scale(0.95);
+}
+
+.sender-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.reply-input-container textarea {
+    width: 100%;
+    height: 85px;
+    background: rgba(0,0,0, 0.25);
+    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 12px;
     color: var(--text-main);
     padding: 1rem;
@@ -598,49 +730,12 @@ section {
     outline: none;
     transition: all 0.3s ease;
 }
-
-#reply-text:focus {
+.reply-input-container textarea:focus {
     border-color: var(--accent-light);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 15px rgba(199, 125, 255, 0.1);
+    box-shadow: 0 0 10px rgba(123, 44, 191, 0.2);
+    background: rgba(0,0,0, 0.4);
 }
 
-#replies-display {
-    max-height: 400px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-#replies-display::-webkit-scrollbar {
-    width: 4px;
-}
-#replies-display::-webkit-scrollbar-thumb {
-    background: var(--accent-primary);
-    border-radius: 4px;
-}
-
-.reply-item {
-    background: rgba(123, 44, 191, 0.1);
-    border: 1px solid var(--glass-border);
-    padding: 1rem;
-    border-radius: 12px;
-    animation: slideInUp 0.4s ease-out;
-}
-
-.reply-time {
-    font-size: 0.75rem;
-    opacity: 0.5;
-    margin-top: 8px;
-    display: block;
-}
-
-@keyframes slideInUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
 /* Observers / Fade-in Transitions - OPTIMIZED */
 .fade-in-hidden {

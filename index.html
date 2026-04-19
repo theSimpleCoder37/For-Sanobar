@@ -180,7 +180,10 @@
                 <div class="content-wrapper w-full px-4">
                     <h2 class="section-title glow-text mb-6">Something I really want to say…</h2>
 
-                    <div class="message-block custom-scroll">
+                    <div class="message-block custom-scroll relative">
+                        <div class="message-date text-right italic text-sm mb-4 pb-2 border-b border-white/10"
+                            style="color: var(--accent-light); opacity: 0.8; font-size: 0.9rem;">Thursday, 18th April
+                        </div>
                         <p class="body-text">
                             Hey, please agar ho sake to aa jaana ghar par.<br>
                             And thank you again for being with me till now.<br>
@@ -213,16 +216,31 @@
                         </p>
                     </div>
 
-                    <!-- Reply Section -->
-                    <div class="reply-section mt-8">
-                        <h3 class="sub-title mb-4" style="font-size: 1.2rem;">Leave a reply...</h3>
-                        <div class="reply-input-container">
-                            <textarea id="reply-text" placeholder="Write your thoughts here..."
+                    <!-- Real-time Chat Section -->
+                    <div class="chat-section mt-8 w-full max-w-[500px] mx-auto text-left">
+                        <h3 class="sub-title mb-4 text-center" style="font-size: 1.2rem;">Chat Section💬</h3>
+
+                        <!-- Reply box for 'Me' (User) -->
+                        <div class="reply-input-container user-me mb-6">
+                            <span class="sender-label">Bhatari Chat from here</span>
+                            <textarea id="my-reply-text" placeholder="Type your message..."
                                 class="custom-scroll"></textarea>
-                            <button id="send-reply-btn" class="primary-btn mt-4">Send Reply ✨</button>
+                            <button id="send-my-btn" class="primary-btn mt-3 btn-me w-full"
+                                style="padding: 0.8rem; font-size: 1rem;">Send Message ✨</button>
                         </div>
-                        <div id="replies-display" class="mt-6 custom-scroll">
-                            <!-- Replies will show here -->
+
+                        <!-- The Chat Box Display -->
+                        <div id="replies-display" class="chat-display custom-scroll">
+                            <!-- Messages will appear here -->
+                        </div>
+
+                        <!-- Reply box for 'Sanobar' (Friend) -->
+                        <div class="reply-input-container user-sanobar mt-6">
+                            <span class="sender-label">Bhandhari Chat from here</span>
+                            <textarea id="sanobar-reply-text" placeholder="Type your message..."
+                                class="custom-scroll"></textarea>
+                            <button id="send-sanobar-btn" class="primary-btn mt-3 btn-sanobar w-full"
+                                style="padding: 0.8rem; font-size: 1rem;">Send Message ✨</button>
                         </div>
                     </div>
 
@@ -259,7 +277,7 @@
         <!-- Firebase Configuration & Real-time Replies -->
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-            import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+            import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
             // IMPORTANT: Replace this with YOUR actual Firebase Config from the Firebase Console
             const firebaseConfig = {
@@ -276,52 +294,109 @@
             const db = getFirestore(app);
             const repliesCol = collection(db, "replies");
 
-            const replyBtn = document.getElementById('send-reply-btn');
-            const replyInput = document.getElementById('reply-text');
-            const repliesDisplay = document.getElementById('replies-display');
+            const myReplyBtn = document.getElementById('send-my-btn');
+            const myReplyInput = document.getElementById('my-reply-text');
+            const sanobarReplyBtn = document.getElementById('send-sanobar-btn');
+            const sanobarReplyInput = document.getElementById('sanobar-reply-text');
+            const chatDisplay = document.getElementById('replies-display');
 
-            // Submit Reply
-            replyBtn.addEventListener('click', async () => {
-                const text = replyInput.value.trim();
-                if (!text) return; // Prevent empty replies
+            // Helper to get relative day label (WhatsApp style)
+            function getDayLabel(date) {
+                const today = new Date();
+                const yesterday = new Date();
+                yesterday.setDate(today.getDate() - 1);
+
+                if (date.toDateString() === today.toDateString()) return "Today";
+                if (date.toDateString() === yesterday.toDateString()) return "Yesterday";
+
+                return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+            }
+
+            // Generic function to send message
+            async function sendMessage(text, senderType, btn, originalText) {
+                if (!text) return;
 
                 try {
-                    replyBtn.disabled = true;
-                    replyBtn.textContent = 'Sending...';
+                    btn.disabled = true;
+                    btn.textContent = 'Sending...';
 
                     await addDoc(repliesCol, {
                         text: text,
+                        sender: senderType,
                         timestamp: serverTimestamp()
                     });
 
-                    replyInput.value = ''; // Clear input
                 } catch (error) {
                     console.error("Error adding reply: ", error);
-                    alert("Failed to send reply. Check your Firebase config!");
+                    alert("Failed to send reply. Please check your connection.");
                 } finally {
-                    replyBtn.disabled = false;
-                    replyBtn.textContent = 'Send Reply ✨';
+                    btn.disabled = false;
+                    btn.textContent = originalText;
                 }
+            }
+
+            // Bind 'Me' button
+            myReplyBtn.addEventListener('click', () => {
+                const text = myReplyInput.value.trim();
+                sendMessage(text, 'me', myReplyBtn, 'Send Message ✨').then(() => {
+                    myReplyInput.value = '';
+                });
             });
 
-            // Real-time listener for replies
-            const q = query(repliesCol, orderBy("timestamp", "desc"));
+            // Bind 'Sanobar' button
+            sanobarReplyBtn.addEventListener('click', () => {
+                const text = sanobarReplyInput.value.trim();
+                sendMessage(text, 'sanobar', sanobarReplyBtn, 'Send Message ✨').then(() => {
+                    sanobarReplyInput.value = '';
+                });
+            });
+
+            // Real-time listener: 24-hour window + Day Dividers
+            const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+            const q = query(
+                repliesCol,
+                where("timestamp", ">=", dayAgo),
+                orderBy("timestamp", "asc")
+            );
+
             onSnapshot(q, (snapshot) => {
-                repliesDisplay.innerHTML = '';
+                chatDisplay.innerHTML = '';
+                let lastDayLabel = "";
+
                 snapshot.forEach((doc) => {
                     const data = doc.data();
-                    const replyItem = document.createElement('div');
-                    replyItem.className = 'reply-item';
+                    if (!data.timestamp) return;
 
-                    // Format date safely
-                    const date = data.timestamp ? data.timestamp.toDate().toLocaleString() : 'Just now';
+                    const msgDate = data.timestamp.toDate();
+                    const currentDayLabel = getDayLabel(msgDate);
 
-                    replyItem.innerHTML = `
-                    <p class="body-text" style="font-size: 0.95rem;">${data.text}</p>
-                    <span class="reply-time">${date}</span>
-                `;
-                    repliesDisplay.appendChild(replyItem);
+                    if (currentDayLabel !== lastDayLabel) {
+                        const divider = document.createElement('div');
+                        divider.className = 'chat-date-divider';
+                        divider.innerHTML = `<span>${currentDayLabel}</span>`;
+                        chatDisplay.appendChild(divider);
+                        lastDayLabel = currentDayLabel;
+                    }
+
+                    const msgDiv = document.createElement('div');
+                    const isMe = data.sender === 'me';
+                    const senderClass = isMe ? 'msg-me' : 'msg-sanobar';
+                    const senderName = isMe ? 'Bhatari' : 'Bhandhari';
+
+                    msgDiv.className = `chat-message ${senderClass}`;
+                    const timeStr = msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    msgDiv.innerHTML = `
+                        <div class="msg-bubble">
+                            <span class="msg-sender" style="display: block; font-size: 0.75rem; font-weight: bold; margin-bottom: 4px; opacity: 0.8;">${senderName}</span>
+                            <p>${data.text}</p>
+                            <span class="msg-time">${timeStr}</span>
+                        </div>
+                    `;
+                    chatDisplay.appendChild(msgDiv);
                 });
+
+                chatDisplay.scrollTop = chatDisplay.scrollHeight;
             });
         </script>
 
