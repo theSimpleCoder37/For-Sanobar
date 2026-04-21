@@ -96,9 +96,7 @@
                     <div class="photo-card mb-10">
                         <img class="photo-img" src="images/image2-eyes.jpg" alt="Beautiful Eyes">
                         <div class="card-caption">
-                            <p class="caption text-sm italic opacity-80 text-center">It's true: Jitna bhi dekhun, Dil
-                                bhar
-                                na paaye 💘</p>
+                            <p class="caption text-sm italic opacity-80 text-center">If life was a book, I would highlight the part where you became my bestfriend 📖✨</p>
                         </div>
                     </div>
 
@@ -155,10 +153,8 @@
                     <div class="shayari-card float-anim mb-6">
                         <div class="quote-mark">“</div>
                         <p class="shayari-text">
-                            Ek baar acche se baat karke toh dekho,<br>
-                            "Tum nahi samjhoge se"<br>
-                            "Tum hi samajhte ho yaar mujhe",<br>
-                            Na ban jaau to kehna.. 💜
+                            I would rather fix things with you<br>
+                            a thousand times than lose you. 💜
                         </p>
                         <div class="quote-mark text-right">”</div>
                     </div>
@@ -166,8 +162,9 @@
                     <div class="shayari-card float-anim-delayed">
                         <div class="quote-mark">“</div>
                         <p class="shayari-text">
-                            Lambi baaton se mujhe koi matlab nahi<br>
-                            Mujhe to unka "Start Penguin" bolna hi kamal lagta hai..💜<br>
+                            I am sorry if I hurt you a lot,<br>
+                            If I never understand how and what you feel.<br>
+                            I am really sorry. 💜
                         </p>
                         <div class="quote-mark text-right">”</div>
                     </div>
@@ -246,9 +243,8 @@
                     <h2 class="section-title mb-6" style="font-size: 3.5rem;">🤲</h2>
                     <div class="dua-card mb-12">
                         <p class="body-text text-lg leading-relaxed">
-                            Allah tumhara har gham halka kar de<br>
-                            tumhein har us cheez se bachaye jo tumhein takleef de,<br>
-                            aur tumhein woh sab de jo tum dil mein chup kar maangti ho. 💜"<br>
+                            May Allah send you so much happiness<br>
+                            that you forget all the times you've ever been hurt. 💜<br>
                             <br>
                             <span class="font-bold">Ameen.</span>
                         </p>
@@ -342,11 +338,11 @@
                 });
             });
 
-            // Real-time listener: 24-hour window + Day Dividers
-            const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+            // Real-time listener: Day Dividers (24-hour window currently disabled)
+            // const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
             const q = query(
-                repliesCol,
-                where("timestamp", ">=", dayAgo),
+                repliesCol, 
+                // where("timestamp", ">=", dayAgo), // Commented out to keep all messages
                 orderBy("timestamp", "asc")
             );
 
