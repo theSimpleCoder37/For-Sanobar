@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordError = document.getElementById('password-error');
     const mainContent = document.getElementById('main-content');
     
+    // Auto-initialize if the lock screen is turned off
+    if (passwordOverlay && passwordOverlay.style.display === 'none') {
+        initMainApp();
+        const firstSection = document.getElementById('s1-opening');
+        if (firstSection) firstSection.classList.add('fade-in-visible');
+    }
+
     const checkPassword = () => {
         if (passwordInput.value === '1102') {
             passwordOverlay.style.display = 'none';
