@@ -295,7 +295,7 @@
         <!-- Firebase Configuration & Real-time Replies -->
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-            import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+            import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
             // IMPORTANT: Replace this with YOUR actual Firebase Config from the Firebase Console
             const firebaseConfig = {
@@ -311,6 +311,16 @@
             const app = initializeApp(firebaseConfig);
             const db = getFirestore(app);
             const repliesCol = collection(db, "replies");
+
+            // TEMPORARY: Clear all existing chats (can be removed once done)
+            async function clearAllChats() {
+                const snapshot = await getDocs(repliesCol);
+                const deletePromises = snapshot.docs.map(doc => deleteDoc(doc.ref));
+                await Promise.all(deletePromises);
+                console.log("All chats cleared!");
+            }
+            // Uncomment the line below, refresh the page ONCE, then comment it out again.
+            clearAllChats();
 
             const myReplyBtn = document.getElementById('send-my-btn');
             const myReplyInput = document.getElementById('my-reply-text');
