@@ -21,11 +21,11 @@
     </div>
 
     <!-- Password Protection Overlay -->
-    <div id="password-overlay" class="password-screen" style="display: none;">
+    <div id="password-overlay" class="password-screen">
         <div class="password-box glass-card">
+            <div class="lock-icon">🔒</div>
             <h2 class="glow-text mb-4">My Comfort Space… 💜</h2>
             <p class="body-text mb-2" style="font-size: 0.9rem;">Please enter the 4-digit code to unlock.</p>
-            <p class="hint-text mb-6">Hint: My Bday + Ur Bday ✨</p>
             <div class="input-group">
                 <input type="password" id="password-input" maxlength="4" placeholder="••••" autocomplete="off">
             </div>
@@ -36,7 +36,7 @@
 
     <!-- Hidden Content Root -->
     <div id="main-content" class="content-root"
-        style="display: block; opacity: 1; transform: scale(1); transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);">
+        style="display: none; opacity: 0; transform: scale(0.98); transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);">
         <div id="particles-container"></div>
         <div class="glow-blob blob-1"></div>
         <div class="glow-blob blob-2"></div>
@@ -96,8 +96,8 @@
                     <div class="photo-card float-anim-delayed mb-10">
                         <img class="photo-img" src="images/image2-eyes.jpg" alt="Beautiful Eyes">
                         <div class="card-caption">
-                            <p class="caption text-sm italic opacity-80 text-center">If life was a book, I would
-                                highlight the part where you became my bestfriend 📖✨</p>
+                            <p class="caption text-sm italic opacity-80 text-center">My eyes never get tired of watching
+                                you &lt;3</p>
                         </div>
                     </div>
 
@@ -126,7 +126,7 @@
                             </div>
                         </div>
                         <div class="music-info mt-4">
-                            <h3 class="song-title">Baarishein❤️‍🩹</h3>
+                            <h3 class="song-title">Ojhal ❤️‍🩹</h3>
                             <button class="play-btn my-3">▶ Play</button>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                             </div>
                         </div>
                         <div class="music-info mt-4">
-                            <h3 class="song-title">Where R U 💔</h3>
+                            <h3 class="song-title"> Qareeb 💗</h3>
                             <button class="play-btn my-3">▶ Play</button>
                         </div>
                     </div>
@@ -153,19 +153,24 @@
 
                     <div class="shayari-card float-anim mb-6">
                         <div class="quote-mark">“</div>
-                        <p class="shayari-text">
-                            I would rather fix things with you<br>
-                            a thousand times than lose you. 💜
+                        <p class="shayari-text" style="line-height: 1.8;">
+                            Or bhi chehre hai zamane me, par dil ko sirf tera hi intezaar raha...<br>
+                            Log milte rahe muskurate huwe, Par aankhon ko bas tera hi didaar raha..<br>
+                            Har mehfil mein naam liya nahi tera, Phir bhi har baat mein tera zikr baar-baar raha...<br>
+                            Or bhi chehre hai zamane me, par dil ko sirf tera hi intezaar raha... 💜
                         </p>
                         <div class="quote-mark text-right">”</div>
                     </div>
 
                     <div class="shayari-card float-anim-delayed">
                         <div class="quote-mark">“</div>
-                        <p class="shayari-text">
-                            I am sorry if I hurt you a lot,<br>
-                            If I never understand how and what you feel.<br>
-                            I am really sorry. 💜
+                        <p class="shayari-text" style="line-height: 1.8;">
+                            Tumse dosti ki koi hisab thodi hai,<br>
+                            tumse dil lagaya khwaab thodi hai,<br>
+                            tum jo kareeb ho itne mazak thodi hai,<br>
+                            tumse milna sirf ek ittefaq thodi hai,<br>
+                            isse zyada or kya misal du main apni dosti ki<br>
+                            ab tumse zyada yaha koi lajawab thodi hai.. 💜
                         </p>
                         <div class="quote-mark text-right">”</div>
                     </div>
@@ -256,24 +261,100 @@
                         <!-- Reply box for 'Me' (User) -->
                         <div class="reply-input-container user-me mb-6">
                             <span class="sender-label">Bhatari Chat from here</span>
+
+                            <!-- Reply Preview -->
+                            <div id="me-reply-preview" class="reply-preview-box">
+                                <span class="reply-sender">Replying to...</span>
+                                <span class="reply-text"></span>
+                                <span class="close-reply" id="close-me-reply">×</span>
+                            </div>
+
+                            <!-- Image Preview -->
+                            <div id="me-image-preview" class="reply-preview-box"
+                                style="display: none; padding: 0.5rem; margin-bottom: 0.5rem; align-items: center; gap: 10px;">
+                                <img id="me-preview-img" src=""
+                                    style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;">
+                                <span class="reply-text" style="flex:1;">Image attached</span>
+                                <span class="close-reply" id="close-me-image">×</span>
+                            </div>
+
                             <textarea id="my-reply-text" placeholder="Type your message..."
                                 class="custom-scroll"></textarea>
-                            <button id="send-my-btn" class="primary-btn mt-3 btn-me w-full"
-                                style="padding: 0.8rem; font-size: 1rem;">Send Message ✨</button>
+                            <div style="display: flex; gap: 10px; margin-top: 12px;">
+                                <label for="my-image-input" class="image-upload-btn" title="Attach Image">
+                                    📷
+                                </label>
+                                <input type="file" id="my-image-input"
+                                    accept="image/png, image/jpeg, image/gif, image/webp" style="display: none;">
+                                <button id="send-my-btn" class="primary-btn btn-me w-full"
+                                    style="padding: 0.8rem; font-size: 1rem;">Send Message ✨</button>
+                            </div>
                         </div>
 
                         <!-- The Chat Box Display -->
-                        <div id="replies-display" class="chat-display custom-scroll">
-                            <!-- Messages will appear here -->
+                        <div style="position: relative;">
+                            <div id="replies-display" class="chat-display custom-scroll">
+                                <div id="chat-messages-list">
+                                    <!-- Messages will appear here -->
+                                </div>
+
+                                <!-- Inline Typing Indicators -->
+                                <div id="typing-bhatari" class="chat-message msg-me"
+                                    style="display: none; margin-top: 10px;">
+                                    <div class="msg-bubble" style="padding: 0.6rem 1.25rem;">
+                                        <span class="msg-sender"
+                                            style="display: block; font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; opacity: 0.8;">Bhatari
+                                            is typing</span>
+                                        <div class="typing-dots" style="margin-top: 4px;">
+                                            <span></span><span></span><span></span></div>
+                                    </div>
+                                </div>
+                                <div id="typing-bhandhari" class="chat-message msg-sanobar"
+                                    style="display: none; margin-top: 10px;">
+                                    <div class="msg-bubble" style="padding: 0.6rem 1.25rem;">
+                                        <span class="msg-sender"
+                                            style="display: block; font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; opacity: 0.8;">Bhandhari
+                                            is typing</span>
+                                        <div class="typing-dots" style="margin-top: 4px;">
+                                            <span></span><span></span><span></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="scroll-to-bottom-btn" class="scroll-bottom-btn"
+                                title="Jump to latest">↓</button>
                         </div>
 
                         <!-- Reply box for 'Sanobar' (Friend) -->
                         <div class="reply-input-container user-sanobar mt-6">
                             <span class="sender-label">Bhandhari Chat from here</span>
+
+                            <!-- Reply Preview -->
+                            <div id="sanobar-reply-preview" class="reply-preview-box">
+                                <span class="reply-sender">Replying to...</span>
+                                <span class="reply-text"></span>
+                                <span class="close-reply" id="close-sanobar-reply">×</span>
+                            </div>
+
+                            <!-- Image Preview -->
+                            <div id="sanobar-image-preview" class="reply-preview-box"
+                                style="display: none; padding: 0.5rem; margin-bottom: 0.5rem; align-items: center; gap: 10px;">
+                                <img id="sanobar-preview-img" src=""
+                                    style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;">
+                                <span class="reply-text" style="flex:1;">Image attached</span>
+                                <span class="close-reply" id="close-sanobar-image">×</span>
+                            </div>
+
                             <textarea id="sanobar-reply-text" placeholder="Type your message..."
                                 class="custom-scroll"></textarea>
-                            <button id="send-sanobar-btn" class="primary-btn mt-3 btn-sanobar w-full"
-                                style="padding: 0.8rem; font-size: 1rem;">Send Message ✨</button>
+                            <div style="display: flex; gap: 10px; margin-top: 12px;">
+                                <label for="sanobar-image-input" class="image-upload-btn" title="Attach Image">
+                                    📷
+                                </label>
+                                <input type="file" id="sanobar-image-input"
+                                    accept="image/png, image/jpeg, image/gif, image/webp" style="display: none;">
+                                <button id="send-sanobar-btn" class="primary-btn btn-sanobar w-full"
+                                    style="padding: 0.8rem; font-size: 1rem;">Send Message ✨</button>
+                            </div>
                         </div>
                     </div>
 
@@ -306,10 +387,16 @@
 
         </main>
 
+        <!-- Fullscreen Image Viewer Modal -->
+        <div id="image-modal" class="image-modal">
+            <span id="close-modal" class="close-modal">×</span>
+            <img class="modal-content" id="modal-img">
+        </div>
+
         <!-- Firebase Configuration & Real-time Replies -->
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-            import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+            import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, where, getDocs, deleteDoc, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
             // IMPORTANT: Replace this with YOUR actual Firebase Config from the Firebase Console
             const firebaseConfig = {
@@ -331,8 +418,91 @@
             const sanobarReplyBtn = document.getElementById('send-sanobar-btn');
             const sanobarReplyInput = document.getElementById('sanobar-reply-text');
             const chatDisplay = document.getElementById('replies-display');
+            const chatMessagesList = document.getElementById('chat-messages-list');
+            const typingBhatari = document.getElementById('typing-bhatari');
+            const typingBhandhari = document.getElementById('typing-bhandhari');
+            const scrollBottomBtn = document.getElementById('scroll-to-bottom-btn');
 
-            // Helper to get relative day label (WhatsApp style)
+            // --- Scroll to Bottom Logic ---
+            chatDisplay.addEventListener('scroll', () => {
+                // If user scrolls up by more than 150px from bottom, show the button
+                if (chatDisplay.scrollHeight - chatDisplay.scrollTop - chatDisplay.clientHeight > 150) {
+                    scrollBottomBtn.classList.add('visible');
+                } else {
+                    scrollBottomBtn.classList.remove('visible');
+                }
+            });
+
+            scrollBottomBtn.addEventListener('click', () => {
+                chatDisplay.scrollTo({ top: chatDisplay.scrollHeight, behavior: 'smooth' });
+            });
+
+            // --- Reply Logic ---
+            function setReply(text, sender, target) {
+                const preview = document.getElementById(`${target}-reply-preview`);
+                preview.querySelector('.reply-sender').textContent = `Replying to ${sender === 'me' ? 'Bhatari' : 'Bhandhari'}`;
+                preview.querySelector('.reply-text').textContent = text;
+                preview.style.display = 'block';
+                if (target === 'me') currentReplyMe = { text, sender };
+                else currentReplySanobar = { text, sender };
+            }
+
+            document.getElementById('close-me-reply').onclick = () => {
+                document.getElementById('me-reply-preview').style.display = 'none';
+                currentReplyMe = null;
+            };
+            document.getElementById('close-sanobar-reply').onclick = () => {
+                document.getElementById('sanobar-reply-preview').style.display = 'none';
+                currentReplySanobar = null;
+            };
+
+            // --- Typing Indicator Logic ---
+            const statusDocRef = doc(db, "replies", "typing_status");
+            let localTypingState = { bhatari: false, bhandhari: false };
+
+            const updateTyping = (user, isTyping) => {
+                if (localTypingState[user] === isTyping) return;
+                localTypingState[user] = isTyping;
+                const update = {};
+                update[`${user}_typing`] = isTyping;
+                update.timestamp = null;
+
+                setDoc(statusDocRef, update, { merge: true }).catch(err => console.error("Status update failed:", err));
+            };
+
+            myReplyInput.addEventListener('input', () => {
+                if (myReplyInput.value.trim().length > 0) {
+                    updateTyping('bhatari', true);
+                    clearTimeout(typingTimeoutMe);
+                    typingTimeoutMe = setTimeout(() => updateTyping('bhatari', false), 2500);
+                } else {
+                    updateTyping('bhatari', false);
+                }
+            });
+
+            sanobarReplyInput.addEventListener('input', () => {
+                if (sanobarReplyInput.value.trim().length > 0) {
+                    updateTyping('bhandhari', true);
+                    clearTimeout(typingTimeoutSanobar);
+                    typingTimeoutSanobar = setTimeout(() => updateTyping('bhandhari', false), 2500);
+                } else {
+                    updateTyping('bhandhari', false);
+                }
+            });
+
+            onSnapshot(statusDocRef, (doc) => {
+                const data = doc.data();
+                if (!data) return;
+
+                typingBhatari.style.display = data.bhatari_typing ? 'flex' : 'none';
+                typingBhandhari.style.display = data.bhandhari_typing ? 'flex' : 'none';
+
+                if (data.bhatari_typing || data.bhandhari_typing) {
+                    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+                }
+            });
+
+            // Helper to get relative day label
             function getDayLabel(date) {
                 const today = new Date();
                 const yesterday = new Date();
@@ -344,23 +514,28 @@
                 return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
             }
 
-            // Generic function to send message
-            async function sendMessage(text, senderType, btn, originalText) {
-                if (!text) return;
+            // --- Send Message ---
+            async function sendMessage(text, senderType, btn, originalText, replyData, imageData) {
+                if (!text && !imageData) return;
 
                 try {
                     btn.disabled = true;
                     btn.textContent = 'Sending...';
 
-                    await addDoc(repliesCol, {
+                    const msgData = {
                         text: text,
                         sender: senderType,
                         timestamp: serverTimestamp()
-                    });
+                    };
+                    if (replyData) msgData.replyTo = replyData;
+                    if (imageData) msgData.imageUrl = imageData;
+
+                    await addDoc(repliesCol, msgData);
+                    updateTyping(senderType === 'me' ? 'bhatari' : 'bhandhari', false);
 
                 } catch (error) {
                     console.error("Error adding reply: ", error);
-                    alert("Failed to send reply. Please check your connection.");
+                    alert("Failed to send message.");
                 } finally {
                     btn.disabled = false;
                     btn.textContent = originalText;
@@ -370,29 +545,64 @@
             // Bind 'Me' button
             myReplyBtn.addEventListener('click', () => {
                 const text = myReplyInput.value.trim();
-                sendMessage(text, 'me', myReplyBtn, 'Send Message ✨').then(() => {
+                sendMessage(text, 'me', myReplyBtn, 'Send Message ✨', currentReplyMe, currentImageMe).then(() => {
                     myReplyInput.value = '';
+                    document.getElementById('me-reply-preview').style.display = 'none';
+                    document.getElementById('me-image-preview').style.display = 'none';
+                    currentReplyMe = null;
+                    currentImageMe = null;
+                    document.getElementById('my-image-input').value = '';
                 });
             });
 
             // Bind 'Sanobar' button
             sanobarReplyBtn.addEventListener('click', () => {
                 const text = sanobarReplyInput.value.trim();
-                sendMessage(text, 'sanobar', sanobarReplyBtn, 'Send Message ✨').then(() => {
+                sendMessage(text, 'sanobar', sanobarReplyBtn, 'Send Message ✨', currentReplySanobar, currentImageSanobar).then(() => {
                     sanobarReplyInput.value = '';
+                    document.getElementById('sanobar-reply-preview').style.display = 'none';
+                    document.getElementById('sanobar-image-preview').style.display = 'none';
+                    currentReplySanobar = null;
+                    currentImageSanobar = null;
+                    document.getElementById('sanobar-image-input').value = '';
                 });
             });
 
-            // Real-time listener: Day Dividers (24-hour window currently disabled)
-            // const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+            // --- 24-Hour Disappearing Messages Logic ---
+            const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+            // 1. Initial UI Query: Only fetch messages from the last 24 hours
+            const dayAgo = new Date(Date.now() - ONE_DAY_MS);
             const q = query(
                 repliesCol,
-                // where("timestamp", ">=", dayAgo), // Commented out to keep all messages
+                where("timestamp", ">=", dayAgo),
                 orderBy("timestamp", "asc")
             );
 
+            // 2. Reliable Background Cleanup: Delete expired messages exactly after 24 hours
+            const cleanupExpiredMessages = async () => {
+                try {
+                    const cutoffTime = new Date(Date.now() - ONE_DAY_MS);
+                    const cleanupQ = query(repliesCol, where("timestamp", "<", cutoffTime));
+                    const expiredSnap = await getDocs(cleanupQ);
+
+                    expiredSnap.forEach((docSnap) => {
+                        // Keep typing status doc safe
+                        if (docSnap.id !== "typing_status") {
+                            deleteDoc(docSnap.ref).catch(err => console.error("Failed to delete expired msg:", err));
+                        }
+                    });
+                } catch (error) {
+                    console.error("Cleanup process error:", error);
+                }
+            };
+
+            // Run cleanup immediately, then every 1 minute to ensure exact precision
+            cleanupExpiredMessages();
+            setInterval(cleanupExpiredMessages, 60 * 1000);
+
             onSnapshot(q, (snapshot) => {
-                chatDisplay.innerHTML = '';
+                chatMessagesList.innerHTML = '';
                 let lastDayLabel = "";
 
                 snapshot.forEach((doc) => {
@@ -406,7 +616,7 @@
                         const divider = document.createElement('div');
                         divider.className = 'chat-date-divider';
                         divider.innerHTML = `<span>${currentDayLabel}</span>`;
-                        chatDisplay.appendChild(divider);
+                        chatMessagesList.appendChild(divider);
                         lastDayLabel = currentDayLabel;
                     }
 
@@ -418,14 +628,45 @@
                     msgDiv.className = `chat-message ${senderClass}`;
                     const timeStr = msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+                    let replyHtml = '';
+                    if (data.replyTo) {
+                        replyHtml = `
+                            <div class="quoted-message">
+                                <span class="msg-sender-name">${data.replyTo.sender === 'me' ? 'Bhatari' : 'Bhandhari'}</span>
+                                <p style="margin:0; font-size: 0.8rem; opacity: 0.8;">${data.replyTo.text || '📷 Image'}</p>
+                            </div>
+                        `;
+                    }
+
+                    let imageHtml = '';
+                    if (data.imageUrl) {
+                        imageHtml = `<div class="msg-image-wrapper"><img src="${data.imageUrl}" class="msg-attached-image" onclick="openFullscreen(this.src)"></div>`;
+                    }
+
                     msgDiv.innerHTML = `
                         <div class="msg-bubble">
+                            <button class="reply-btn-ui" title="Reply">↩</button>
+                            ${replyHtml}
                             <span class="msg-sender" style="display: block; font-size: 0.75rem; font-weight: bold; margin-bottom: 4px; opacity: 0.8;">${senderName}</span>
-                            <p>${data.text}</p>
+                            ${imageHtml}
+                            ${data.text ? `<p>${data.text}</p>` : ''}
                             <span class="msg-time">${timeStr}</span>
                         </div>
                     `;
-                    chatDisplay.appendChild(msgDiv);
+
+                    // Handle Reply Button Click
+                    msgDiv.querySelector('.reply-btn-ui').onclick = () => {
+                        const replyText = data.text || '📷 Image';
+                        if (data.sender === 'sanobar') {
+                            setReply(replyText, data.sender, 'me');
+                            myReplyInput.focus();
+                        } else {
+                            setReply(replyText, data.sender, 'sanobar');
+                            sanobarReplyInput.focus();
+                        }
+                    };
+
+                    chatMessagesList.appendChild(msgDiv);
                 });
 
                 chatDisplay.scrollTop = chatDisplay.scrollHeight;

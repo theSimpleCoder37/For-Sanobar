@@ -14,26 +14,68 @@ document.addEventListener('DOMContentLoaded', () => {
         if (firstSection) firstSection.classList.add('fade-in-visible');
     }
 
+    let failedAttempts = 0;
+    let isLockedOut = false;
+
+    // Create lockout message element dynamically
+    const lockoutMsg = document.createElement('p');
+    lockoutMsg.className = 'lockout-msg';
+    lockoutMsg.style.display = 'none';
+    passwordError.parentNode.insertBefore(lockoutMsg, passwordError.nextSibling);
+
     const checkPassword = () => {
+        if (isLockedOut) return;
+
         if (passwordInput.value === '1102') {
-            passwordOverlay.style.display = 'none';
-            mainContent.style.display = 'block';
-            
-            // Trigger professional intro transition
-            requestAnimationFrame(() => {
-                mainContent.style.opacity = '1';
-                mainContent.style.transform = 'scale(1)';
-            });
-            
-            // Re-trigger global initialization
-            initMainApp();
-            
-            const firstSection = document.getElementById('s1-opening');
-            if (firstSection) firstSection.classList.add('fade-in-visible');
+            failedAttempts = 0; // Reset on success
+            passwordOverlay.style.opacity = '0';
+            setTimeout(() => {
+                passwordOverlay.style.display = 'none';
+                mainContent.style.display = 'block';
+                
+                // Trigger professional intro transition
+                requestAnimationFrame(() => {
+                    mainContent.style.opacity = '1';
+                    mainContent.style.transform = 'scale(1)';
+                });
+                
+                // Re-trigger global initialization
+                initMainApp();
+                
+                const firstSection = document.getElementById('s1-opening');
+                if (firstSection) firstSection.classList.add('fade-in-visible');
+            }, 500); // Smooth fade out for overlay
         } else {
-            passwordError.style.display = 'block';
+            failedAttempts++;
             passwordInput.value = '';
-            setTimeout(() => { passwordError.style.display = 'none'; }, 3000);
+            
+            if (failedAttempts >= 3) {
+                isLockedOut = true;
+                passwordInput.disabled = true;
+                unlockBtn.disabled = true;
+                passwordError.style.display = 'none';
+                lockoutMsg.textContent = 'Too many attempts. Locked out for 15 seconds.';
+                lockoutMsg.style.display = 'block';
+                
+                let countdown = 15;
+                const lockTimer = setInterval(() => {
+                    countdown--;
+                    lockoutMsg.textContent = `Too many attempts. Locked out for ${countdown} seconds.`;
+                    if (countdown <= 0) {
+                        clearInterval(lockTimer);
+                        isLockedOut = false;
+                        failedAttempts = 0;
+                        passwordInput.disabled = false;
+                        unlockBtn.disabled = false;
+                        lockoutMsg.style.display = 'none';
+                        passwordInput.focus();
+                    }
+                }, 1000);
+            } else {
+                passwordError.textContent = `Incorrect code. ${3 - failedAttempts} attempts remaining. 🐧`;
+                passwordError.style.display = 'block';
+                setTimeout(() => { passwordError.style.display = 'none'; }, 2000);
+            }
         }
     };
 
