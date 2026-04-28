@@ -380,7 +380,7 @@
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
             import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, where, getDocs, deleteDoc, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-            import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+            import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
             // IMPORTANT: Replace this with YOUR actual Firebase Config from the Firebase Console
             const firebaseConfig = {
@@ -427,6 +427,8 @@
             let currentReplySanobar = null;
             let currentImageMe = null;
             let currentImageSanobar = null;
+            let currentVideoMe = null;
+            let currentVideoSanobar = null;
             let typingTimeoutMe, typingTimeoutSanobar;
 
             // --- Image Compression Logic ---
@@ -474,12 +476,14 @@
                         const previewImg = document.getElementById('me-preview-img');
                         previewImg.src = compressedBase64;
                         preview.style.display = 'flex';
+                        myReplyInput.placeholder = "Add a caption...";
                     } else {
                         currentImageSanobar = compressedBase64;
                         const preview = document.getElementById('sanobar-image-preview');
                         const previewImg = document.getElementById('sanobar-preview-img');
                         previewImg.src = compressedBase64;
                         preview.style.display = 'flex';
+                        sanobarReplyInput.placeholder = "Add a caption...";
                     }
                 } catch (err) {
                     console.error("Image processing error:", err);
@@ -494,11 +498,13 @@
                 document.getElementById('me-image-preview').style.display = 'none';
                 currentImageMe = null;
                 document.getElementById('my-image-input').value = '';
+                myReplyInput.placeholder = "Type your message...";
             };
             document.getElementById('close-sanobar-image').onclick = () => {
                 document.getElementById('sanobar-image-preview').style.display = 'none';
                 currentImageSanobar = null;
                 document.getElementById('sanobar-image-input').value = '';
+                sanobarReplyInput.placeholder = "Type your message...";
             };
 
             // Video input listeners
@@ -516,10 +522,12 @@
                     currentVideoMe = file;
                     const preview = document.getElementById('me-video-preview');
                     preview.style.display = 'flex';
+                    myReplyInput.placeholder = "Add a caption...";
                 } else {
                     currentVideoSanobar = file;
                     const preview = document.getElementById('sanobar-video-preview');
                     preview.style.display = 'flex';
+                    sanobarReplyInput.placeholder = "Add a caption...";
                 }
             };
 
@@ -530,11 +538,13 @@
                 document.getElementById('me-video-preview').style.display = 'none';
                 currentVideoMe = null;
                 document.getElementById('my-video-input').value = '';
+                myReplyInput.placeholder = "Type your message...";
             };
             document.getElementById('close-sanobar-video').onclick = () => {
                 document.getElementById('sanobar-video-preview').style.display = 'none';
                 currentVideoSanobar = null;
                 document.getElementById('sanobar-video-input').value = '';
+                sanobarReplyInput.placeholder = "Type your message...";
             };
 
             // Fullscreen Modal Logic
@@ -653,8 +663,8 @@
                     updateTyping(senderType === 'me' ? 'bhatari' : 'bhandhari', false);
 
                 } catch (error) {
-                    console.error("Error adding reply: ", error);
-                    alert("Failed to send message. Please check your connection or file size.");
+                    console.error("Error sending message: ", error);
+                    alert("Failed to send. Please check your internet or if the file is too large.");
                 } finally {
                     btn.disabled = false;
                     btn.textContent = originalText;
@@ -666,6 +676,7 @@
                 const text = myReplyInput.value.trim();
                 sendMessage(text, 'me', myReplyBtn, 'Send Message ✨', currentReplyMe, currentImageMe, currentVideoMe).then(() => {
                     myReplyInput.value = '';
+                    myReplyInput.placeholder = "Type your message...";
                     document.getElementById('me-reply-preview').style.display = 'none';
                     document.getElementById('me-image-preview').style.display = 'none';
                     document.getElementById('me-video-preview').style.display = 'none';
@@ -682,6 +693,7 @@
                 const text = sanobarReplyInput.value.trim();
                 sendMessage(text, 'sanobar', sanobarReplyBtn, 'Send Message ✨', currentReplySanobar, currentImageSanobar, currentVideoSanobar).then(() => {
                     sanobarReplyInput.value = '';
+                    sanobarReplyInput.placeholder = "Type your message...";
                     document.getElementById('sanobar-reply-preview').style.display = 'none';
                     document.getElementById('sanobar-image-preview').style.display = 'none';
                     document.getElementById('sanobar-video-preview').style.display = 'none';
@@ -711,9 +723,20 @@
                     const cleanupQ = query(repliesCol, where("timestamp", "<", cutoffTime));
                     const expiredSnap = await getDocs(cleanupQ);
 
-                    expiredSnap.forEach((docSnap) => {
+                    expiredSnap.forEach(async (docSnap) => {
+                        const data = docSnap.data();
                         // Keep typing status doc safe
                         if (docSnap.id !== "typing_status") {
+                            // If message has a video, delete from Storage first
+                            if (data.videoUrl) {
+                                try {
+                                    const videoRef = ref(storage, data.videoUrl);
+                                    await deleteObject(videoRef);
+                                } catch (storageErr) {
+                                    console.warn("Storage delete failed (likely already gone):", storageErr);
+                                }
+                            }
+                            // Delete document from Firestore
                             deleteDoc(docSnap.ref).catch(err => console.error("Failed to delete expired msg:", err));
                         }
                     });
@@ -755,10 +778,11 @@
 
                     let replyHtml = '';
                     if (data.replyTo) {
+                        const replyContent = data.replyTo.text || '📎 Media';
                         replyHtml = `
                             <div class="quoted-message">
                                 <span class="msg-sender-name">${data.replyTo.sender === 'me' ? 'Bhatari' : 'Bhandhari'}</span>
-                                <p style="margin:0; font-size: 0.8rem; opacity: 0.8;">${data.replyTo.text || '📷 Image'}</p>
+                                <p style="margin:0; font-size: 0.8rem; opacity: 0.8;">${replyContent}</p>
                             </div>
                         `;
                     }
@@ -794,12 +818,12 @@
 
                     // Handle Reply Button Click
                     msgDiv.querySelector('.reply-btn-ui').onclick = () => {
-                        const replyText = data.text || '📷 Image';
+                        const replyLabel = data.text || (data.videoUrl ? '🎥 Video' : '📷 Image');
                         if (data.sender === 'sanobar') {
-                            setReply(replyText, data.sender, 'me');
+                            setReply(replyLabel, data.sender, 'me');
                             myReplyInput.focus();
                         } else {
-                            setReply(replyText, data.sender, 'sanobar');
+                            setReply(replyLabel, data.sender, 'sanobar');
                             sanobarReplyInput.focus();
                         }
                     };
