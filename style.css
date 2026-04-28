@@ -738,6 +738,23 @@ section {
     transform: scale(1.02);
 }
 
+.msg-video-wrapper {
+    margin: 0.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 100%;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.msg-attached-video {
+    width: 100%;
+    max-height: 300px;
+    display: block;
+    outline: none;
+}
+
 /* Fullscreen Image Modal */
 .image-modal {
     display: none;
