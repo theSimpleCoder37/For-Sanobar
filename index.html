@@ -380,7 +380,7 @@
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
             import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, where, getDocs, deleteDoc, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-            import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+            import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
             // IMPORTANT: Replace this with YOUR actual Firebase Config from the Firebase Console
             const firebaseConfig = {
@@ -644,10 +644,20 @@
 
                     let videoUrl = null;
                     if (videoFile) {
-                        btn.textContent = 'Uploading Video...';
                         const videoRef = ref(storage, `chat_videos/${Date.now()}_${videoFile.name}`);
-                        const uploadResult = await uploadBytes(videoRef, videoFile);
-                        videoUrl = await getDownloadURL(uploadResult.ref);
+                        const uploadTask = uploadBytesResumable(videoRef, videoFile);
+
+                        // Return a promise that resolves when upload completes
+                        videoUrl = await new Promise((resolve, reject) => {
+                            uploadTask.on('state_changed', 
+                                (snapshot) => {
+                                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                                    btn.textContent = `Uploading ${progress}%...`;
+                                }, 
+                                (error) => reject(error), 
+                                () => getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject)
+                            );
+                        });
                     }
 
                     const msgData = {
