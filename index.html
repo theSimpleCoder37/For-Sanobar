@@ -380,7 +380,10 @@
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
             import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, where, getDocs, deleteDoc, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-            import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+            // --- Cloudinary Configuration ---
+            const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dyua5q73q/upload";
+            const CLOUDINARY_PRESET = "chat_videos";
 
             // IMPORTANT: Replace this with YOUR actual Firebase Config from the Firebase Console
             const firebaseConfig = {
@@ -395,7 +398,6 @@
 
             const app = initializeApp(firebaseConfig);
             const db = getFirestore(app);
-            const storage = getStorage(app);
             const repliesCol = collection(db, "replies");
 
             const myReplyBtn = document.getElementById('send-my-btn');
@@ -426,7 +428,9 @@
             let currentReplyMe = null;
             let currentReplySanobar = null;
             let currentImageMe = null;
+            let currentImageFileMe = null;
             let currentImageSanobar = null;
+            let currentImageFileSanobar = null;
             let currentVideoMe = null;
             let currentVideoSanobar = null;
             let typingTimeoutMe, typingTimeoutSanobar;
@@ -472,6 +476,7 @@
                     const compressedBase64 = await compressImage(file);
                     if (target === 'me') {
                         currentImageMe = compressedBase64;
+                        currentImageFileMe = file;
                         const preview = document.getElementById('me-image-preview');
                         const previewImg = document.getElementById('me-preview-img');
                         previewImg.src = compressedBase64;
@@ -479,6 +484,7 @@
                         myReplyInput.placeholder = "Add a caption...";
                     } else {
                         currentImageSanobar = compressedBase64;
+                        currentImageFileSanobar = file;
                         const preview = document.getElementById('sanobar-image-preview');
                         const previewImg = document.getElementById('sanobar-preview-img');
                         previewImg.src = compressedBase64;
@@ -497,12 +503,14 @@
             document.getElementById('close-me-image').onclick = () => {
                 document.getElementById('me-image-preview').style.display = 'none';
                 currentImageMe = null;
+                currentImageFileMe = null;
                 document.getElementById('my-image-input').value = '';
                 myReplyInput.placeholder = "Type your message...";
             };
             document.getElementById('close-sanobar-image').onclick = () => {
                 document.getElementById('sanobar-image-preview').style.display = 'none';
                 currentImageSanobar = null;
+                currentImageFileSanobar = null;
                 document.getElementById('sanobar-image-input').value = '';
                 sanobarReplyInput.placeholder = "Type your message...";
             };
@@ -635,28 +643,44 @@
             }
 
             // --- Send Message ---
-            async function sendMessage(text, senderType, btn, originalText, replyData, imageData, videoFile) {
-                if (!text && !imageData && !videoFile) return;
+            async function sendMessage(text, senderType, btn, originalText, replyData, imageFile, videoFile) {
+                if (!text && !imageFile && !videoFile) return;
 
                 try {
                     btn.disabled = true;
                     btn.textContent = 'Sending...';
 
-                    let videoUrl = null;
-                    if (videoFile) {
-                        const videoRef = ref(storage, `chat_videos/${Date.now()}_${videoFile.name}`);
-                        const uploadTask = uploadBytesResumable(videoRef, videoFile);
+                    let uploadedUrl = null;
+                    const fileToUpload = imageFile || videoFile;
 
-                        // Return a promise that resolves when upload completes
-                        videoUrl = await new Promise((resolve, reject) => {
-                            uploadTask.on('state_changed', 
-                                (snapshot) => {
-                                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                    if (fileToUpload) {
+                        // Cloudinary Upload Logic with Progress
+                        uploadedUrl = await new Promise((resolve, reject) => {
+                            const formData = new FormData();
+                            formData.append('file', fileToUpload);
+                            formData.append('upload_preset', CLOUDINARY_PRESET);
+
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('POST', CLOUDINARY_URL, true);
+
+                            xhr.upload.onprogress = (e) => {
+                                if (e.lengthComputable) {
+                                    const progress = Math.round((e.loaded / e.total) * 100);
                                     btn.textContent = `Uploading ${progress}%...`;
-                                }, 
-                                (error) => reject(error), 
-                                () => getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject)
-                            );
+                                }
+                            };
+
+                            xhr.onload = () => {
+                                if (xhr.status === 200) {
+                                    const response = JSON.parse(xhr.responseText);
+                                    resolve(response.secure_url);
+                                } else {
+                                    reject(new Error('Upload Failed: ' + xhr.statusText));
+                                }
+                            };
+
+                            xhr.onerror = () => reject(new Error('Network Error during upload'));
+                            xhr.send(formData);
                         });
                     }
 
@@ -666,15 +690,16 @@
                         timestamp: serverTimestamp()
                     };
                     if (replyData) msgData.replyTo = replyData;
-                    if (imageData) msgData.imageUrl = imageData;
-                    if (videoUrl) msgData.videoUrl = videoUrl;
+                    
+                    if (imageFile) msgData.imageUrl = uploadedUrl;
+                    if (videoFile) msgData.videoUrl = uploadedUrl;
 
                     await addDoc(repliesCol, msgData);
                     updateTyping(senderType === 'me' ? 'bhatari' : 'bhandhari', false);
 
                 } catch (error) {
                     console.error("Error sending message: ", error);
-                    alert("Failed to send. Please check your internet or if the file is too large.");
+                    alert("Failed to send. Error: " + error.message);
                 } finally {
                     btn.disabled = false;
                     btn.textContent = originalText;
@@ -684,7 +709,7 @@
             // Bind 'Me' button
             myReplyBtn.addEventListener('click', () => {
                 const text = myReplyInput.value.trim();
-                sendMessage(text, 'me', myReplyBtn, 'Send Message ✨', currentReplyMe, currentImageMe, currentVideoMe).then(() => {
+                sendMessage(text, 'me', myReplyBtn, 'Send Message ✨', currentReplyMe, currentImageFileMe, currentVideoMe).then(() => {
                     myReplyInput.value = '';
                     myReplyInput.placeholder = "Type your message...";
                     document.getElementById('me-reply-preview').style.display = 'none';
@@ -692,6 +717,7 @@
                     document.getElementById('me-video-preview').style.display = 'none';
                     currentReplyMe = null;
                     currentImageMe = null;
+                    currentImageFileMe = null;
                     currentVideoMe = null;
                     document.getElementById('my-image-input').value = '';
                     document.getElementById('my-video-input').value = '';
@@ -701,7 +727,7 @@
             // Bind 'Sanobar' button
             sanobarReplyBtn.addEventListener('click', () => {
                 const text = sanobarReplyInput.value.trim();
-                sendMessage(text, 'sanobar', sanobarReplyBtn, 'Send Message ✨', currentReplySanobar, currentImageSanobar, currentVideoSanobar).then(() => {
+                sendMessage(text, 'sanobar', sanobarReplyBtn, 'Send Message ✨', currentReplySanobar, currentImageFileSanobar, currentVideoSanobar).then(() => {
                     sanobarReplyInput.value = '';
                     sanobarReplyInput.placeholder = "Type your message...";
                     document.getElementById('sanobar-reply-preview').style.display = 'none';
@@ -709,6 +735,7 @@
                     document.getElementById('sanobar-video-preview').style.display = 'none';
                     currentReplySanobar = null;
                     currentImageSanobar = null;
+                    currentImageFileSanobar = null;
                     currentVideoSanobar = null;
                     document.getElementById('sanobar-image-input').value = '';
                     document.getElementById('sanobar-video-input').value = '';
@@ -734,19 +761,9 @@
                     const expiredSnap = await getDocs(cleanupQ);
 
                     expiredSnap.forEach(async (docSnap) => {
-                        const data = docSnap.data();
                         // Keep typing status doc safe
                         if (docSnap.id !== "typing_status") {
-                            // If message has a video, delete from Storage first
-                            if (data.videoUrl) {
-                                try {
-                                    const videoRef = ref(storage, data.videoUrl);
-                                    await deleteObject(videoRef);
-                                } catch (storageErr) {
-                                    console.warn("Storage delete failed (likely already gone):", storageErr);
-                                }
-                            }
-                            // Delete document from Firestore
+                            // Delete document from Firestore (Cloudinary files stay on Cloudinary)
                             deleteDoc(docSnap.ref).catch(err => console.error("Failed to delete expired msg:", err));
                         }
                     });
