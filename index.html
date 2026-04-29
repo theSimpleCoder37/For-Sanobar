@@ -265,6 +265,44 @@
 
                         <!-- The Chat Box Display -->
                         <div style="position: relative;">
+
+                            <div id="replies-display" class="chat-display custom-scroll">
+                                <div id="chat-messages-list">
+                                    <!-- Messages will appear here -->
+                                </div>
+
+                                <!-- Inline Typing Indicators -->
+                                <div id="typing-bhatari" class="chat-message msg-me"
+                                    style="display: none; margin-top: 10px;">
+                                    <div class="msg-bubble" style="padding: 0.6rem 1.25rem;">
+                                        <span class="msg-sender"
+                                            style="display: block; font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; opacity: 0.8;">Bhatari
+                                            is typing</span>
+                                        <div class="typing-dots" style="margin-top: 4px;">
+                                            <span></span><span></span><span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="typing-bhandhari" class="chat-message msg-sanobar"
+                                    style="display: none; margin-top: 10px;">
+                                    <div class="msg-bubble" style="padding: 0.6rem 1.25rem;">
+                                        <span class="msg-sender"
+                                            style="display: block; font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; opacity: 0.8;">Bhandhari
+                                            is typing</span>
+                                        <div class="typing-dots" style="margin-top: 4px;">
+                                            <span></span><span></span><span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="scroll-to-bottom-btn" class="scroll-bottom-btn"
+                                title="Jump to latest">↓</button>
+                        </div>
+
+                        <!-- Reply box for 'Sanobar' (Friend) -->
+                        <div class="reply-input-container user-sanobar mt-6" style="position: relative;">
+                            <span class="sender-label">Bhandhari Chat from here</span>
+
                             <!-- Animated SVG Penguin Mascot -->
                             <div id="chat-penguin">
                                 <div class="penguin-tooltip" id="penguin-tip">Heyyy! 💜</div>
@@ -327,42 +365,6 @@
                                     <circle id="p-think-3" cx="86" cy="11" r="4.5" fill="#c77dff" opacity="0" />
                                 </svg>
                             </div>
-                            <div id="replies-display" class="chat-display custom-scroll">
-                                <div id="chat-messages-list">
-                                    <!-- Messages will appear here -->
-                                </div>
-
-                                <!-- Inline Typing Indicators -->
-                                <div id="typing-bhatari" class="chat-message msg-me"
-                                    style="display: none; margin-top: 10px;">
-                                    <div class="msg-bubble" style="padding: 0.6rem 1.25rem;">
-                                        <span class="msg-sender"
-                                            style="display: block; font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; opacity: 0.8;">Bhatari
-                                            is typing</span>
-                                        <div class="typing-dots" style="margin-top: 4px;">
-                                            <span></span><span></span><span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="typing-bhandhari" class="chat-message msg-sanobar"
-                                    style="display: none; margin-top: 10px;">
-                                    <div class="msg-bubble" style="padding: 0.6rem 1.25rem;">
-                                        <span class="msg-sender"
-                                            style="display: block; font-size: 0.7rem; font-weight: bold; margin-bottom: 4px; opacity: 0.8;">Bhandhari
-                                            is typing</span>
-                                        <div class="typing-dots" style="margin-top: 4px;">
-                                            <span></span><span></span><span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button id="scroll-to-bottom-btn" class="scroll-bottom-btn"
-                                title="Jump to latest">↓</button>
-                        </div>
-
-                        <!-- Reply box for 'Sanobar' (Friend) -->
-                        <div class="reply-input-container user-sanobar mt-6">
-                            <span class="sender-label">Bhandhari Chat from here</span>
 
                             <!-- Reply Preview -->
                             <div id="sanobar-reply-preview" class="reply-preview-box">

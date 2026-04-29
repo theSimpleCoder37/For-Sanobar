@@ -1295,37 +1295,38 @@ section {
 /* ===================== ANIMATED SVG PENGUIN ===================== */
 #chat-penguin {
     position: absolute;
-    bottom: 12px; /* Moved to bottom right */
-    right: 12px;
-    width: 62px; /* Scaled down slightly */
-    height: 74px;
+    top: 6px;
+    right: 8px;
+    bottom: auto;
+    width: 38px; /* Ultra mini */
+    height: 46px;
     cursor: pointer;
     z-index: 100;
     user-select: none;
-    filter: drop-shadow(0 6px 18px rgba(123,44,191,0.45));
+    filter: drop-shadow(0 3px 10px rgba(123,44,191,0.3));
 }
 #chat-penguin .penguin-tooltip {
     position: absolute;
-    bottom: 115%;
+    bottom: 110%;
     right: 0;
     left: auto;
     background: linear-gradient(135deg, rgba(25, 10, 50, 0.98), rgba(15, 5, 30, 0.98));
     backdrop-filter: blur(12px);
     border: 1px solid rgba(199, 125, 255, 0.3);
-    border-radius: 16px 16px 4px 16px;
-    padding: 0.55rem 0.9rem; /* Compact padding */
-    font-size: 0.78rem; /* Slightly smaller font */
+    border-radius: 12px 12px 4px 12px;
+    padding: 0.35rem 0.65rem; /* Tiny padding */
+    font-size: 0.65rem; /* Tiny font */
     line-height: 1.4;
     color: #ffffff;
     width: max-content;
-    min-width: 110px; /* Scaled down stabilization */
-    max-width: 180px;
+    min-width: 75px;
+    max-width: 140px;
     text-align: center;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(12px) scale(0.94) translateZ(0);
+    transform: translateY(10px) scale(0.92) translateZ(0);
     transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     backface-visibility: hidden;
     contain: paint layout;
     -webkit-font-smoothing: subpixel-antialiased;
