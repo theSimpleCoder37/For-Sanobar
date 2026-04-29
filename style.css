@@ -678,7 +678,8 @@ section {
 .scroll-bottom-btn {
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    left: 50%; /* Centered horizontally */
+    right: auto;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -692,7 +693,7 @@ section {
     cursor: pointer;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(10px);
+    transform: translateX(-50%) translateY(10px); /* Center + Hidden offset */
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     z-index: 50;
@@ -702,12 +703,12 @@ section {
 .scroll-bottom-btn.visible {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0); /* Center + Visible */
 }
 
 .scroll-bottom-btn:hover {
     background: var(--accent-light);
-    transform: translateY(-3px) scale(1.05);
+    transform: translateX(-50%) translateY(-3px) scale(1.05);
 }
 
 .chat-message {
@@ -1294,10 +1295,10 @@ section {
 /* ===================== ANIMATED SVG PENGUIN ===================== */
 #chat-penguin {
     position: absolute;
-    top: -52px;
-    right: 8px;
-    width: 80px;
-    height: 96px;
+    bottom: 12px; /* Moved to bottom right */
+    right: 12px;
+    width: 62px; /* Scaled down slightly */
+    height: 74px;
     cursor: pointer;
     z-index: 100;
     user-select: none;
@@ -1312,13 +1313,13 @@ section {
     backdrop-filter: blur(12px);
     border: 1px solid rgba(199, 125, 255, 0.3);
     border-radius: 16px 16px 4px 16px;
-    padding: 0.75rem 1.2rem;
-    font-size: 0.85rem;
-    line-height: 1.5;
+    padding: 0.55rem 0.9rem; /* Compact padding */
+    font-size: 0.78rem; /* Slightly smaller font */
+    line-height: 1.4;
     color: #ffffff;
     width: max-content;
-    min-width: 140px; /* Stabilizes the box */
-    max-width: 220px;
+    min-width: 110px; /* Scaled down stabilization */
+    max-width: 180px;
     text-align: center;
     opacity: 0;
     pointer-events: none;
@@ -1326,7 +1327,7 @@ section {
     transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
     backface-visibility: hidden;
-    contain: paint layout; /* Optimization: Stops layout thrashing */
+    contain: paint layout;
     -webkit-font-smoothing: subpixel-antialiased;
 }
 /* Speech bubble tail */

@@ -694,10 +694,13 @@
                     // Step 3: Fade in the new tip
                     penguin.classList.add('show-tip');
 
-                    // Step 4: After display time, prepare for next transition
+                    // Step 4: After display time, fade out and prepare for the gap
                     penguinTipTimeout = setTimeout(() => {
-                        tipActive = false;
-                        if (priority < 3) currentTipPriority = 0;
+                        penguin.classList.remove('show-tip');
+                        setTimeout(() => {
+                            tipActive = false;
+                            if (priority < 3) currentTipPriority = 0;
+                        }, 400); // Allow fade-out to finish
                     }, holdMs);
                 }, 300); // Fast fade transition
             }
@@ -741,13 +744,13 @@
                 showTip(randomTip(tipKey || 'idle'), priority, 5000, forceUpdate);
 
                 // --- 🔄 SEAMLESS SOCIAL: Constant Rotation System ---
-                // Every 5.5 seconds, we push a new tip for the current state
+                // 5s display + 3s gap = 8s total cycle
                 sustainedTipInterval = setInterval(() => {
                     // We only block if a higher priority action is active
                     if (!tipActive || currentTipPriority <= priority) {
                         showTip(randomTip(tipKey || 'idle'), priority, 5000);
                     }
-                }, 5500); 
+                }, 8000); 
 
                 if (autoReset && state && state !== 'idle') {
                     penguinStateTimeout = setTimeout(() => {
@@ -755,7 +758,7 @@
                         if (lastState === state) {
                             setPenguinState('idle', false);
                         }
-                    }, 5600);
+                    }, 8100);
                 }
 
                 if (state !== 'p-sleep') resetSleepTimer();
