@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordError = document.getElementById('password-error');
     const mainContent = document.getElementById('main-content');
     
+    // --- 🌍 GLOBAL ATMOSPHERE: Start particles immediately ---
+    createParticles();
+    spawnBokeh(); // Initial burst
+    for (let i = 0; i < 8; i++) setTimeout(spawnBokeh, i * 300);
+    setInterval(spawnBokeh, 2500);
+
     // Auto-initialize if the lock screen is turned off
     if (passwordOverlay && passwordOverlay.style.display === 'none') {
         initMainApp();
@@ -85,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function initMainApp() {
-        // 1. Core Systems (Optimized Restore: Very low count for perfect performance)
-        createParticles();
+        // 1. Core Systems
+        // (Particles now started globally at top of script)
 
         // 2. Start Button Navigation
         const startBtn = document.getElementById('start-btn');
@@ -275,9 +281,28 @@ function createParticles() {
             @keyframes flowSafe {
                 0% { transform: translate3d(0, 0, 0); opacity: 0; }
                 50% { opacity: 0.4; }
-                100% { transform: translate3d(20px, 40px, 0); opacity: 0; }
+                100% { transform: translate3d(30px, 50px, 0); opacity: 0; }
             }
         `;
         document.head.appendChild(styleSheet);
     }
+}
+
+// Global Bokeh Spawner for Aesthetic Background
+function spawnBokeh() {
+    const container = document.getElementById('bokeh-container');
+    if (!container) return;
+
+    const el = document.createElement('div');
+    el.className = 'bokeh-particle';
+    const size = Math.random() * 35 + 15;
+    const left = Math.random() * 100;
+    const duration = Math.random() * 10 + 10;
+    const delay = Math.random() * 5;
+    
+    el.style.cssText = `width:${size}px;height:${size}px;left:${left}%;animation-duration:${duration}s;animation-delay:${delay}s;will-change:transform;`;
+    container.appendChild(el);
+    
+    // Auto-cleanup after animation
+    setTimeout(() => el.remove(), (duration + delay) * 1000);
 }

@@ -18,6 +18,9 @@
         <div class="bg-orb orb-1"></div>
         <div class="bg-orb orb-2"></div>
         <div class="bg-orb orb-3"></div>
+        <!-- Global Particle Layers -->
+        <div id="bokeh-container"></div>
+        <div id="particles-container"></div>
     </div>
 
     <!-- Password Protection Overlay -->
@@ -37,9 +40,6 @@
     <!-- Hidden Content Root -->
     <div id="main-content" class="content-root"
         style="display: none; opacity: 0; transform: scale(0.98); transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);">
-        <!-- Bokeh Particles Container -->
-        <div id="bokeh-container"></div>
-        <div id="particles-container"></div>
         <div class="glow-blob blob-1"></div>
         <div class="glow-blob blob-2"></div>
         <div class="glow-blob blob-3"></div>
@@ -676,33 +676,30 @@
             let sustainedTipInterval = null;
             let lastState = null; // Start null to ensure first state triggers
 
-            function showTip(text, priority = 0, holdMs = 4500, force = false) {
+            function showTip(text, priority = 0, holdMs = 5000, force = false) {
                 // If a higher or equal priority tip comes in, we allow interruption
                 if (!force && tipActive && priority < currentTipPriority) return;
 
                 currentTipPriority = priority;
                 tipActive = true;
 
-                // Step 1: Fade out existing tip
+                // Step 1: Smoothly fade out the old tip
                 penguin.classList.remove('show-tip');
 
                 clearTimeout(penguinTipTimeout);
                 penguinTipTimeout = setTimeout(() => {
-                    // Step 2: Swap text while hidden
+                    // Step 2: Swap text
                     penguinTip.textContent = text;
                     
-                    // Step 3: Fade in new tip
+                    // Step 3: Fade in the new tip
                     penguin.classList.add('show-tip');
 
-                    // Reset tip after hold time
+                    // Step 4: After display time, prepare for next transition
                     penguinTipTimeout = setTimeout(() => {
-                        penguin.classList.remove('show-tip');
-                        setTimeout(() => {
-                            tipActive = false;
-                            currentTipPriority = 0;
-                        }, 300);
+                        tipActive = false;
+                        if (priority < 3) currentTipPriority = 0;
                     }, holdMs);
-                }, 250);
+                }, 300); // Fast fade transition
             }
 
             function setPenguinState(state, autoReset = true) {
@@ -741,22 +738,24 @@
                 else if (state === 'p-think-down') tipKey = 'thinkDown';
                 else if (state && state.startsWith('p-')) tipKey = state.substring(2);
 
-                showTip(randomTip(tipKey || 'idle'), priority, (priority >= 3 ? 5000 : 4500), forceUpdate);
+                showTip(randomTip(tipKey || 'idle'), priority, 5000, forceUpdate);
 
-                // Sustained states like thinking/sleep/idle should rotate tips periodically
-                const sustained = ['idle', 'p-sleep', 'p-think', 'p-think-up', 'p-think-down'];
-                if (sustained.includes(state)) {
-                    sustainedTipInterval = setInterval(() => {
-                        // Only rotate if we're not being blocked by a higher priority action
-                        if (!tipActive || currentTipPriority <= priority) {
-                            showTip(randomTip(tipKey || 'idle'), priority, 4500);
-                        }
-                    }, 6500); // 4.5s duration + ~2s delay = 6.5s interval
-                } else if (autoReset && state && state !== 'idle') {
+                // --- 🔄 SEAMLESS SOCIAL: Constant Rotation System ---
+                // Every 5.5 seconds, we push a new tip for the current state
+                sustainedTipInterval = setInterval(() => {
+                    // We only block if a higher priority action is active
+                    if (!tipActive || currentTipPriority <= priority) {
+                        showTip(randomTip(tipKey || 'idle'), priority, 5000);
+                    }
+                }, 5500); 
+
+                if (autoReset && state && state !== 'idle') {
                     penguinStateTimeout = setTimeout(() => {
-                        penguinSvg.classList.remove(state);
-                        lastState = 'idle'; // Reset tracking after auto-reset
-                    }, 2500);
+                        // After an action, return to idle rotation if not interrupted
+                        if (lastState === state) {
+                            setPenguinState('idle', false);
+                        }
+                    }, 5600);
                 }
 
                 if (state !== 'p-sleep') resetSleepTimer();
@@ -772,22 +771,6 @@
             // Click to wave — always shows tip
             penguin.addEventListener('click', () => setPenguinState('p-wave'));
             resetSleepTimer();
-
-            // --- ✨ LIVING BACKGROUND BOKEH ---
-            const bokehContainer = document.getElementById('bokeh-container');
-            function spawnBokeh() {
-                const el = document.createElement('div');
-                el.className = 'bokeh-particle';
-                const size = Math.random() * 30 + 10;
-                const left = Math.random() * 100;
-                const duration = Math.random() * 12 + 8;
-                const delay = Math.random() * 5;
-                el.style.cssText = `width:${size}px;height:${size}px;left:${left}%;animation-duration:${duration}s;animation-delay:${delay}s;`;
-                bokehContainer.appendChild(el);
-                setTimeout(() => el.remove(), (duration + delay) * 1000);
-            }
-            for (let i = 0; i < 12; i++) spawnBokeh();
-            setInterval(spawnBokeh, 2500);
 
             // --- Smooth scroll to bottom ---
             function smoothScrollToBottom() {

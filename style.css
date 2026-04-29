@@ -36,13 +36,12 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-/* --- PERSISTENT BACKGROUND SYSTEM (Mobile Optimized) --- */
+/* --- PERSISTENT BACKGROUND SYSTEM (Universal) --- */
 .background-canvas {
     position: fixed;
     top: 0; left: 0; 
     width: 100%; height: 100%;
-    background: #0d0d12; 
-    background: linear-gradient(to bottom, #150a2a, #0b0b0f);
+    background: radial-gradient(circle at 50% 50%, var(--bg-purple) 0%, var(--bg-dark) 100%);
     z-index: -10;
     pointer-events: none;
     overflow: hidden;
@@ -61,16 +60,16 @@ body::-webkit-scrollbar {
     position: fixed;
     border-radius: 50%;
     pointer-events: none;
-    z-index: -4;
+    z-index: -3; /* Floating above orbs */
     animation: bokehFloat linear infinite;
     opacity: 0;
-    background: radial-gradient(circle, rgba(199,125,255,0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(199,125,255,0.4) 0%, transparent 80%);
 }
 @keyframes bokehFloat {
-    0%   { transform: translateY(110vh) scale(0.3); opacity: 0; }
+    0%   { transform: translate3d(0, 110vh, 0) scale(0.3); opacity: 0; }
     10%  { opacity: 0.5; }
     90%  { opacity: 0.3; }
-    100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+    100% { transform: translate3d(0, -20vh, 0) scale(1); opacity: 0; }
 }
 
 .orb-1 {
@@ -102,12 +101,12 @@ body::-webkit-scrollbar {
 /* Cleanup for absolute clarity */
 body::before, body::after, .glow-blob { display: none !important; }
 
-#particles-container {
+#bokeh-container, #particles-container {
     position: fixed;
-    top: 0; left: 0; 
+    top: 0; left: 0;
     width: 100%; height: 100%;
-    z-index: -5;
     pointer-events: none;
+    z-index: -2; /* Floating high enough to be seen */
     overflow: hidden;
 }
 
@@ -571,7 +570,7 @@ section {
     position: fixed;
     top: 0; left: 0; 
     width: 100%; height: 100dvh;
-    background: radial-gradient(circle at 50% 50%, var(--bg-purple) 0%, var(--bg-dark) 100%);
+    background: transparent; /* Use the global background canvas */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -906,10 +905,19 @@ section {
 .typing-dots span:nth-child(1) { animation-delay: 0s; }
 .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
 .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
 @keyframes typingBounceNew {
     0%, 100% { transform: translateY(0) scale(1);   opacity: 0.4; }
     30%       { transform: translateY(-6px) scale(1.3); opacity: 1;   }
     60%       { transform: translateY(2px) scale(0.9);  opacity: 0.7; }
+}
+
+#bokeh-container, #particles-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: -1;
 }
 
 /* Reply Feature Styles - Refined & Beautiful */
