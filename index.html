@@ -37,6 +37,8 @@
     <!-- Hidden Content Root -->
     <div id="main-content" class="content-root"
         style="display: none; opacity: 0; transform: scale(0.98); transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);">
+        <!-- Bokeh Particles Container -->
+        <div id="bokeh-container"></div>
         <div id="particles-container"></div>
         <div class="glow-blob blob-1"></div>
         <div class="glow-blob blob-2"></div>
@@ -191,15 +193,19 @@
                         <p class="body-text">
                             I have added some features, I hope you will like it...<br>
                             <br>
-                            Aur sorry yaar, main website ki link change karne ki bhot koshish kiya, but 
+                            Aur sorry yaar, main website ki link change karne ki bhot koshish kiya, but
                             jaha par maine website ko deploy kiya na wo allow nahi karra website change karne ko.<br>
                             So for now it will not possible, but I will try kuch jugaad karne padenga.<br>
                             <br>
-                            Okay the main talk, tune boli na tere face par kuch change hogaya hai, I think tere naak par change huwa hai, tune naak tochhi na? kyuki last time jab maine tujhe aawaz diya tha na, to tu mere paas aayi thi tab maine notice kiya tha, I can be wrong?<br>
+                            Okay the main talk, tune boli na tere face par kuch change hogaya hai, I think tere naak par
+                            change huwa hai, tune naak tochhi na? kyuki last time jab maine tujhe aawaz diya tha na, to
+                            tu mere paas aayi thi tab maine notice kiya tha, I can be wrong?<br>
                             <br>
-                            And ab to lock bhi hai website par, to tension free hokar baat kar sakti, and main isko aur secure banane ke try karunga..<br>
+                            And ab to lock bhi hai website par, to tension free hokar baat kar sakti, and main isko aur
+                            secure banane ke try karunga..<br>
                             <br>
-                            Aur jab pin enter karte time, save password karke pop-up aaya to, do not save karna okay.<br>
+                            Aur jab pin enter karte time, save password karke pop-up aaya to, do not save karna
+                            okay.<br>
                             <br>
                             Thankyou so muchh for being with me... 💜
                         </p>
@@ -245,7 +251,7 @@
                                 </label>
                                 <input type="file" id="my-image-input"
                                     accept="image/png, image/jpeg, image/gif, image/webp" style="display: none;">
-                                
+
                                 <label for="my-video-input" class="image-upload-btn" title="Attach Video">
                                     🎥
                                 </label>
@@ -259,6 +265,64 @@
 
                         <!-- The Chat Box Display -->
                         <div style="position: relative;">
+                            <!-- Animated SVG Penguin Mascot -->
+                            <div id="chat-penguin">
+                                <div class="penguin-tooltip" id="penguin-tip">Heyyy! 💜</div>
+                                <svg id="penguin-svg" viewBox="0 0 100 118" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Left Wing -->
+                                    <g id="p-wing-l">
+                                        <ellipse cx="21" cy="80" rx="11" ry="24" fill="#12122e"
+                                            transform="rotate(-18,21,66)" />
+                                    </g>
+                                    <!-- Body -->
+                                    <ellipse cx="50" cy="88" rx="30" ry="32" fill="#12122e" />
+                                    <!-- Belly -->
+                                    <ellipse cx="50" cy="94" rx="18" ry="22" fill="#eef0f5" />
+                                    <!-- Right Wing -->
+                                    <g id="p-wing-r">
+                                        <ellipse cx="79" cy="80" rx="11" ry="24" fill="#12122e"
+                                            transform="rotate(18,79,66)" />
+                                    </g>
+                                    <!-- Feet -->
+                                    <ellipse cx="40" cy="116" rx="11" ry="5" fill="#f0a500" />
+                                    <ellipse cx="60" cy="116" rx="11" ry="5" fill="#f0a500" />
+                                    <!-- Head -->
+                                    <circle cx="50" cy="46" r="28" fill="#12122e" />
+                                    <!-- Eye whites -->
+                                    <ellipse cx="38" cy="42" rx="10" ry="11" fill="white" />
+                                    <ellipse cx="62" cy="42" rx="10" ry="11" fill="white" />
+                                    <!-- Pupils -->
+                                    <circle id="p-pupil-l" cx="39" cy="43" r="5.5" fill="#12122e" />
+                                    <circle id="p-pupil-r" cx="63" cy="43" r="5.5" fill="#12122e" />
+                                    <!-- Eye shine -->
+                                    <circle cx="42" cy="40" r="2.2" fill="white" />
+                                    <circle cx="66" cy="40" r="2.2" fill="white" />
+                                    <!-- Beak -->
+                                    <ellipse cx="50" cy="55" rx="7.5" ry="4.5" fill="#f0a500" />
+                                    <!-- Blush -->
+                                    <ellipse id="p-blush-l" cx="28" cy="52" rx="8" ry="5" fill="#ff6b9d" opacity="0" />
+                                    <ellipse id="p-blush-r" cx="72" cy="52" rx="8" ry="5" fill="#ff6b9d" opacity="0" />
+                                    <!-- Happy Smile -->
+                                    <path id="p-smile" d="M 43 60 Q 50 67 57 60" stroke="#f0a500" stroke-width="2.5"
+                                        fill="none" stroke-linecap="round" opacity="0" />
+                                    <!-- Sleep eyes (closed arcs drawn over eye whites) -->
+                                    <ellipse cx="38" cy="43" rx="10" ry="11" fill="white" id="p-sleep-cover-l"
+                                        opacity="0" />
+                                    <ellipse cx="62" cy="43" rx="10" ry="11" fill="white" id="p-sleep-cover-r"
+                                        opacity="0" />
+                                    <path id="p-sleep-l" d="M 29 43 Q 38 50 47 43" stroke="#12122e" stroke-width="3.5"
+                                        fill="none" stroke-linecap="round" opacity="0" />
+                                    <path id="p-sleep-r" d="M 53 43 Q 62 50 71 43" stroke="#12122e" stroke-width="3.5"
+                                        fill="none" stroke-linecap="round" opacity="0" />
+                                    <!-- ZZZ -->
+                                    <text id="p-zzz" x="72" y="28" font-size="11" fill="#c77dff" opacity="0"
+                                        font-family="Outfit,sans-serif" font-weight="600">zzz</text>
+                                    <!-- Thought bubbles (thinking state) -->
+                                    <circle id="p-think-1" cx="70" cy="28" r="2.5" fill="#c77dff" opacity="0" />
+                                    <circle id="p-think-2" cx="77" cy="20" r="3.5" fill="#c77dff" opacity="0" />
+                                    <circle id="p-think-3" cx="86" cy="11" r="4.5" fill="#c77dff" opacity="0" />
+                                </svg>
+                            </div>
                             <div id="replies-display" class="chat-display custom-scroll">
                                 <div id="chat-messages-list">
                                     <!-- Messages will appear here -->
@@ -328,7 +392,7 @@
                                 </label>
                                 <input type="file" id="sanobar-image-input"
                                     accept="image/png, image/jpeg, image/gif, image/webp" style="display: none;">
-                                
+
                                 <label for="sanobar-video-input" class="image-upload-btn" title="Attach Video">
                                     🎥
                                 </label>
@@ -410,9 +474,344 @@
             const typingBhandhari = document.getElementById('typing-bhandhari');
             const scrollBottomBtn = document.getElementById('scroll-to-bottom-btn');
 
+            // --- 🐧 ANIMATED SVG PENGUIN BRAIN ---
+            const penguin = document.getElementById('chat-penguin');
+            const penguinSvg = document.getElementById('penguin-svg');
+            const penguinTip = document.getElementById('penguin-tip');
+            const P_STATES = ['p-wave', 'p-happy', 'p-think', 'p-think-up', 'p-think-down', 'p-sleep'];
+            let penguinTipTimeout = null;
+            let penguinStateTimeout = null;
+            let sleepTimer = null;
+            let isFirstLoadFinished = false;
+
+            const TIPS = {
+                idle: [
+                    'Main bhi hoon yahan 💜',
+                    'Bas yahan chill kar raha hoon 🐧',
+                    'Shhh... sun raha hoon 👂',
+                    'Itna pyaar dekh ke dil bhar gaya 🥹',
+                    'Ye dono na... mashallah 💜',
+                    'Khush raho dono 🌙',
+                    'Bhatari ka wait khatam ho 🙏',
+                    'Yaar... pani puri khaate khaate baat karlo na 🌊',
+                    'Dono mile toh duniya sundar lagti hai 🌸',
+                    'Bhandhari ki awaz speaker se tez hai, par dil se bhi louder hai 💜',
+                    'Egg puff + Bhandhari = best combo 🥚✨',
+                    'Bhatari tera sabr bahut khoobsurat hai yaar 🙏',
+                    'Chaat khao, baatein karo, khush raho 🥣',
+                    'Main hoon yahan... akela penguin 🐧💔',
+                    'Ek din sab theek ho jaayega 💜',
+                    'Dua hai ki ye dono hamesha hasein 🤲',
+                    'Bhandhari... uski aankhein bhi keh deti hain jo woh zubaan se nahi kehti 💜',
+                    'Itni sundar hai Bhandhari... Bhatari sahi keh raha hai 🌸',
+                    'Bhandhari ki aankhein... jaise koi gehra raaz hon ✨',
+                    'Woh baat karti hai, hasati hai... bas kabhi dil ki baat nahi kehti 🥺',
+                    'Har roz intzaar karna bhi ek tarah ka pyaar hai 💜',
+                    'Jo duniya mein ek hi ho, usse kabhi mat khona 💜',
+                    'Bhatari ki ek lauti bestfriend... isse keemti kuch nahi 🐧',
+                    'Teri aankhon mein uski fikr saaf dikh rahi hai 💜',
+                    'Woh sabse special hai... Bhatari ke liye 🌸',
+                    'Bhandhari ko pata bhi nahi ki Bhatari usse kitna darta hai khone se 🥺',
+                ],
+                wave: [
+                    'Hiii Mera naam hai Pingu!! 🖐️💜',
+                    'Aye! Main yahan hoon! 🐧',
+                    'Heyyyy bestiesss!! 🎉',
+                    'Dekho dekho! Main hoon! 👋',
+                    'Bhatari aur Bhandhari!! Hiiiii!! 🌊',
+                    'Aao aao! Main intzaar kar raha tha! 🐧💜',
+                    'Yahan hoon main! Ignore mat karna mujhe bhi! 😅',
+                ],
+                happy: [
+                    'YAYYYY message aa gaya!! 🥳',
+                    'So cute so cute so cute 🥰',
+                    'Dil khush ho gaya!! 💃',
+                    'Heart full!! 💜💜💜',
+                    'Mazaa aa gaya!! 🎊',
+                    'Bhandhari ne reply kiya!! 🎉🎉',
+                    'Ye moment frame karlo yaar 📸',
+                    'Bhatari ke liye yahi kaafi hai 🥹',
+                    'Ek message mein dono ki khushi dikh gayi 💜',
+                    'Aaj ka din ban gaya!! ✨',
+                    'Speaker mode on — Bhandhari bol rahi hai!! 📢😂',
+                    'Pani puri jaisa khatta meetha moment 🌊😄',
+                    'Ye bond... unbreakable hai yaar 💜🔗',
+                ],
+                thinkUp: [
+                    'Bhatari kya likh raha hai... 👀',
+                    'Upar dekh raha hoon... 🤭',
+                    'Ooh Bhatari typing!! 👁️',
+                    'Kya bol raha hai Bhatari... 🫣',
+                    'Bhatari phir se dil ki baat likhne wala hai 💜',
+                    'Bhatari... baar baar message karta hai, cute hai yaar 😅',
+                    'Upar se kuch aa raha hai... wait karo 🙄✨',
+                    'Bhatari typing... Bhandhari padh lena please 🥺',
+                    'Yeh ladka na... dil se likhta hai 💜',
+                    'Bhatari phir express kar raha hai... Bhandhari notice karo! 👆',
+                    'Bhatari ke words mein bahut feeling hai 🥹',
+                    'Dekho kitna wait karta hai reply ke liye 💔',
+                    'Shayad koi special baat aa rahi hai... 🌸',
+                    'Upar wala bol raha hai kuch important 🔔',
+                    'Bhatari ne keyboard pakdi hai... matlab kuch dil se nikla hai 💜',
+                ],
+                thinkDown: [
+                    'Bhandhari neeche kuch likh rahi hai! 👀',
+                    'Yeh neeche wali kya bol rahi hai... 🤭',
+                    'Suno suno! Bhandhari bol rahi hai 🎤',
+                    'Bhandhari typing... wait karo 🫣',
+                    'Speaker on!! Bhandhari kuch bol rahi hai 📢',
+                    'Ooh! Bhandhari ne type kiya!! 🎉',
+                    'Neeche se aa raha hai kuch... 👇✨',
+                    'Yaar Bhandhari ne type kiya!! Bhatari khush ho jaa! 🥳',
+                    'Pata nahi kya likhegi... par padhunga zaroor 👁️',
+                    'Bhandhari ki reply = Bhatari ki smile 💜',
+                    'Egg puff khate khate type kar rahi hogi shayad 🥚😂',
+                    'Loud voice, louder heart 💜 — Bhandhari typing!',
+                    'Bhandhari ka ek reply, Bhatari ka poora din ban jaata hai 🌸',
+                    'Pani puri break ke baad finally reply!! 🌊',
+                    'Arey arey!! Bhandhari ne keyboard chhodi nahi abhi! 🎊',
+                    'Ignore karna bhool gayi lagta hai aaj... 🥹',
+                    'Bhandhari ki typing speed bhi speaker jaisi tez hai 📢😂',
+                ],
+                send: [
+                    'Bhatari ne bhej diya!! Fingers crossed 🤞💜',
+                    'Message gone!! Ab Bhandhari ka wait... ⏳',
+                    'Dil ka message bhej diya!! Allah kare reply aaye 🥺',
+                    'Bhatari... brave hai tu yaar 💪💜',
+                    'Dekho kitne pyaar se likhta hai... 🥹',
+                    'Bhandhari ne dekha toh dono khush honge 🌸',
+                    'SENT!! Ab jo hoga dekha jaayega 😤✨',
+                    'Ek message aur... teri taraf se 💜',
+                    'Bhandhari padh lena please, dekh le ek baar 🥺',
+                    'Jo dil mein hai wo bol diya!! 🎯💜',
+                    'Message bhi udd gaya, dil bhi udd gaya 💌',
+                    'Ab reply aaye ya na aaye... tune try kiya 💜',
+                ],
+                sleep: [
+                    'Zzz... neend aa gayi... 😴',
+                    'Thak gaya yaar... 💤',
+                    'Quiet time hai... shhh 🌙',
+                    'So jao so jao... zzz 💤',
+                    'Aamo... I mean zzz... 😪',
+                    'Baat karo nahi to main so jaata hoon 😴',
+                    'Bhatari aur Bhandhari dono busy hain... main so raha hoon 💤',
+                    'Ek pani puri kha ke so jao... 🌊😴',
+                    'Koi nahi hai... zzz... 🌙',
+                    'Mere sapne mein bhi ye dono baatein karte hain 🥹💤',
+                    'Jab miloge tab jagunga... abhi so raha hoon 😴',
+                    'Itni der ho gayi... chalo so jaate hain 💤🌙',
+                    'Penguin ko neend aati hai jab log ignore karte hain 😴',
+                ],
+                welcome: [
+                    'Bhatari aur Bhandhari phir se saath!! 💜🎉',
+                    'Main phir se aa gaya!! Miss kiya? 🐧✨',
+                    'In dono ka bond dekh ke din ban gaya 🌸',
+                    'Aao aao! Baatein shuru karo jaldi! 💃',
+                    'Welcome back bestiesss!! 🥳💜',
+                ],
+                receive: [
+                    'OOH!! Bhandhari ka reply!! 📢💜',
+                    'Suno suno!! Bhandhari ne bola kuch!! 🎤',
+                    'Speaker alert!! 📢 Bhandhari typing and sending!!',
+                    'Bhatari ke chehre par smile aa gayi hogi 🤭💜',
+                    'Bhandhari itni sundar hai, uske words bhi sundar honge ✨',
+                    'Dekho Bhandhari ne ignore nahi kiya!! 🥳',
+                ],
+                media: [
+                    'WAH!! Photo/Video aa gayi!! 📸✨',
+                    'Dekho dekho! Bhandhari ne kuch bheja hai! 👀',
+                    'In yaadon ko hamesha sambhaal ke rakhna 💜',
+                    'Bhandhari aur bhi cute lag rahi hogi photo mein 🥰',
+                    'Mashallah!! Kitni sundar hai na? 🌸✨',
+                    'Bhatari... screenshot lele jaldi!! 📸🤭',
+                ],
+                paniPuri: [
+                    'Pani puri ka naam liya aur Bhandhari hazir!! 🌊😂',
+                    'Arey!! Bhandhari ko pani puri khilao koi! 🥣✨',
+                    'Khatta meetha teekha... bilkul Bhandhari jaisa! 🌶️🤭',
+                    'Pani puri ki treat pakki hai aaj!! 💃',
+                ],
+                eggPuff: [
+                    'Egg puff!! Bhandhari ka favorite! 🥚✨',
+                    'Bhandhari aur Egg puff... sadiyon purana rishta 🥚😂',
+                    'Ek egg puff Bhatari ke liye bhi? 🥺',
+                ],
+                beautiful: [
+                    'Sundar toh hai... uski aankhein sab keh deti hain 🌸✨',
+                    'Bhatari ki pasand ekdum top class hai! 💜',
+                    'Itni beauty dekh ke penguin bhi blush kar gaya 🐧💓',
+                ],
+            };
+
+            const tipHistory = {};
+
+            function randomTip(state) {
+                const arr = TIPS[state] || TIPS.idle;
+                if (!tipHistory[state]) tipHistory[state] = [];
+
+                // If the entire pool was used, reset it
+                if (tipHistory[state].length >= arr.length) {
+                    tipHistory[state] = [];
+                }
+
+                // Get available tips (not in history)
+                const available = arr.filter(t => !tipHistory[state].includes(t));
+                const chosen = available[Math.floor(Math.random() * available.length)];
+
+                tipHistory[state].push(chosen);
+                return chosen;
+            }
+
+            // --- 🐧 ADVANCED PENGUIN BRAIN: Priority-based Interaction ---
+            let currentTipPriority = 0; // 0: Idle, 1: Sleep, 2: Think, 3: Action/Special
+            let tipActive = false;
+            let sustainedTipInterval = null;
+            let lastState = 'idle';
+
+            function showTip(text, priority = 0, holdMs = 7000, force = false) {
+                // If a higher or equal priority tip comes in, we allow interruption
+                if (!force && tipActive && priority < currentTipPriority) return;
+
+                currentTipPriority = priority;
+                tipActive = true;
+
+                // Start fade out
+                penguinTip.style.transition = 'opacity 0.25s ease';
+                penguinTip.style.opacity = '0';
+
+                clearTimeout(penguinTipTimeout);
+                penguinTipTimeout = setTimeout(() => {
+                    penguinTip.textContent = text;
+                    penguinTip.style.opacity = '1';
+                    penguin.classList.add('show-tip');
+
+                    // Reset tip after hold time
+                    penguinTipTimeout = setTimeout(() => {
+                        penguin.classList.remove('show-tip');
+                        setTimeout(() => {
+                            tipActive = false;
+                            currentTipPriority = 0;
+                        }, 300);
+                    }, holdMs);
+                }, 250);
+            }
+
+            function setPenguinState(state, autoReset = true) {
+                const priorityMap = {
+                    'p-wave': 3, 'p-happy': 3, 'p-welcome': 3, 'p-receive': 3, 'p-media': 3, 'send': 3, 'paniPuri': 3, 'eggPuff': 3, 'beautiful': 3,
+                    'p-think': 2, 'p-think-up': 2, 'p-think-down': 2,
+                    'p-sleep': 1,
+                    'idle': 0
+                };
+                const priority = priorityMap[state] || 0;
+
+                // Track if we are switching from a non-thinking state to a thinking state
+                const thinkingStates = ['p-think', 'p-think-up', 'p-think-down'];
+                const isThinking = thinkingStates.includes(state);
+                const wasThinking = thinkingStates.includes(lastState);
+                const forceUpdate = isThinking && !wasThinking;
+
+                // Edge Case: If state is same and priority is not 'Action', skip reset to prevent flickering
+                if (state === lastState && priority < 3) return;
+                lastState = state;
+
+                // Stop any existing sustained rotation
+                clearInterval(sustainedTipInterval);
+                sustainedTipInterval = null;
+
+                // Update SVG classes
+                P_STATES.forEach(s => penguinSvg.classList.remove(s));
+                clearTimeout(penguinStateTimeout);
+                if (state && state !== 'idle') {
+                    penguinSvg.classList.add(state);
+                }
+
+                // Map state to TIP category
+                let tipKey = state;
+                if (state === 'p-think-up') tipKey = 'thinkUp';
+                else if (state === 'p-think-down') tipKey = 'thinkDown';
+                else if (state && state.startsWith('p-')) tipKey = state.substring(2);
+
+                showTip(randomTip(tipKey || 'idle'), priority, (priority >= 3 ? 6500 : 4500), forceUpdate);
+
+                // Sustained states like thinking/sleep should rotate tips periodically
+                const sustained = ['p-sleep', 'p-think', 'p-think-up', 'p-think-down'];
+                if (sustained.includes(state)) {
+                    sustainedTipInterval = setInterval(() => {
+                        // Only rotate if we're not being blocked by a higher priority action
+                        if (!tipActive || currentTipPriority <= priority) {
+                            showTip(randomTip(tipKey), priority, 4500);
+                        }
+                    }, 9000); // 9s rotation for sustained states
+                } else if (autoReset && state && state !== 'idle') {
+                    penguinStateTimeout = setTimeout(() => {
+                        penguinSvg.classList.remove(state);
+                        lastState = 'idle'; // Reset tracking after auto-reset
+                    }, 2500);
+                }
+
+                if (state !== 'p-sleep') resetSleepTimer();
+            }
+
+            function resetSleepTimer() {
+                clearTimeout(sleepTimer);
+                sleepTimer = setTimeout(() => {
+                    setPenguinState('p-sleep');
+                }, 90000);
+            }
+
+            // Click to wave — always shows tip
+            penguin.addEventListener('click', () => setPenguinState('p-wave'));
+            resetSleepTimer();
+
+            // --- ✨ LIVING BACKGROUND BOKEH ---
+            const bokehContainer = document.getElementById('bokeh-container');
+            function spawnBokeh() {
+                const el = document.createElement('div');
+                el.className = 'bokeh-particle';
+                const size = Math.random() * 30 + 10;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 12 + 8;
+                const delay = Math.random() * 5;
+                el.style.cssText = `width:${size}px;height:${size}px;left:${left}%;animation-duration:${duration}s;animation-delay:${delay}s;`;
+                bokehContainer.appendChild(el);
+                setTimeout(() => el.remove(), (duration + delay) * 1000);
+            }
+            for (let i = 0; i < 12; i++) spawnBokeh();
+            setInterval(spawnBokeh, 2500);
+
+            // --- Smooth scroll to bottom ---
+            function smoothScrollToBottom() {
+                chatDisplay.scrollTo({ top: chatDisplay.scrollHeight, behavior: 'smooth' });
+            }
+
+            // --- Typing indicator → Penguin looks directionally ---
+            const typingObserver = new MutationObserver(() => {
+                const bhatariTyping = typingBhatari.style.display !== 'none';
+                const bhandhariTyping = typingBhandhari.style.display !== 'none';
+
+                if (bhatariTyping && !bhandhariTyping) {
+                    if (!penguinSvg.classList.contains('p-think-up')) {
+                        setPenguinState('p-think-up', false);
+                    }
+                } else if (bhandhariTyping && !bhatariTyping) {
+                    if (!penguinSvg.classList.contains('p-think-down')) {
+                        setPenguinState('p-think-down', false);
+                    }
+                } else if (bhatariTyping && bhandhariTyping) {
+                    if (!penguinSvg.classList.contains('p-think')) {
+                        setPenguinState('p-think', false);
+                    }
+                } else {
+                    const wasThinking = ['p-think', 'p-think-up', 'p-think-down'].some(s => penguinSvg.classList.contains(s));
+                    if (wasThinking) setPenguinState('idle');
+                }
+            });
+            typingObserver.observe(typingBhatari, { attributes: true, attributeFilter: ['style'] });
+            typingObserver.observe(typingBhandhari, { attributes: true, attributeFilter: ['style'] });
+
             // --- Scroll to Bottom Logic ---
             chatDisplay.addEventListener('scroll', () => {
-                // If user scrolls up by more than 150px from bottom, show the button
                 if (chatDisplay.scrollHeight - chatDisplay.scrollTop - chatDisplay.clientHeight > 150) {
                     scrollBottomBtn.classList.add('visible');
                 } else {
@@ -420,9 +819,7 @@
                 }
             });
 
-            scrollBottomBtn.addEventListener('click', () => {
-                chatDisplay.scrollTo({ top: chatDisplay.scrollHeight, behavior: 'smooth' });
-            });
+            scrollBottomBtn.addEventListener('click', () => smoothScrollToBottom());
 
             // --- Chat State Variables ---
             let currentReplyMe = null;
@@ -642,9 +1039,46 @@
                 return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
             }
 
+            // --- Haptic Feedback Helper ---
+            function haptic(pattern = [40]) {
+                if (navigator.vibrate) navigator.vibrate(pattern);
+            }
+
+            // --- Optimistic UI bubble helper ---
+            function addOptimisticBubble(text, senderType, hasMedia) {
+                const isMe = senderType === 'me';
+                const div = document.createElement('div');
+                div.className = `chat-message ${isMe ? 'msg-me' : 'msg-sanobar'}`;
+                div.id = 'optimistic-bubble';
+                div.innerHTML = `<div class="msg-bubble sending-optimistic">
+                    <span class="msg-sender" style="display:block;font-size:0.75rem;font-weight:bold;margin-bottom:4px;opacity:0.8;">${isMe ? 'Bhatari' : 'Bhandhari'}</span>
+                    ${hasMedia ? '<span style="opacity:0.6;font-size:0.9rem">📎 Uploading media...</span>' : ''}
+                    ${text ? `<p>${text}</p>` : ''}
+                    <span class="msg-time" style="font-style:italic;">Sending...</span>
+                </div>`;
+                chatMessagesList.appendChild(div);
+                smoothScrollToBottom();
+                return div;
+            }
+
             // --- Send Message ---
             async function sendMessage(text, senderType, btn, originalText, replyData, imageFile, videoFile) {
                 if (!text && !imageFile && !videoFile) return;
+
+                // 1. Haptic feedback immediately
+                haptic([30]);
+
+                // 2. Whoosh animation on the input container
+                const container = btn.closest('.reply-input-container');
+                container.classList.remove('send-flash');
+                container.offsetHeight;
+                container.classList.add('send-flash');
+                setTimeout(() => container.classList.remove('send-flash'), 400);
+
+                // 3. Optimistic UI - bubble appears instantly
+                const optimisticBubble = addOptimisticBubble(text, senderType, !!(imageFile || videoFile));
+                setPenguinState('p-happy');
+                showTip(randomTip('send'), 4000);
 
                 try {
                     btn.disabled = true;
@@ -654,7 +1088,6 @@
                     const fileToUpload = imageFile || videoFile;
 
                     if (fileToUpload) {
-                        // Cloudinary Upload Logic with Progress
                         uploadedUrl = await new Promise((resolve, reject) => {
                             const formData = new FormData();
                             formData.append('file', fileToUpload);
@@ -690,16 +1123,17 @@
                         timestamp: serverTimestamp()
                     };
                     if (replyData) msgData.replyTo = replyData;
-                    
                     if (imageFile) msgData.imageUrl = uploadedUrl;
                     if (videoFile) msgData.videoUrl = uploadedUrl;
 
                     await addDoc(repliesCol, msgData);
                     updateTyping(senderType === 'me' ? 'bhatari' : 'bhandhari', false);
+                    haptic([20, 30, 20]); // success haptic
 
                 } catch (error) {
                     console.error("Error sending message: ", error);
                     alert("Failed to send. Error: " + error.message);
+                    optimisticBubble.remove();
                 } finally {
                     btn.disabled = false;
                     btn.textContent = originalText;
@@ -746,26 +1180,21 @@
             const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
             // 1. UI Query: Fetch messages from the last 24 hours (with a small safety overlap)
-            let dayAgo = new Date(Date.now() - ONE_DAY_MS - (10 * 60 * 1000)); // 24h + 10m buffer
+            let dayAgo = new Date(Date.now() - ONE_DAY_MS - (10 * 60 * 1000));
             let q = query(
                 repliesCol,
                 where("timestamp", ">=", dayAgo),
                 orderBy("timestamp", "asc")
             );
 
-            // 2. Reliable Background Cleanup: Delete expired messages exactly after 24 hours
+            // 2. Reliable Background Cleanup
             const cleanupExpiredMessages = async () => {
                 try {
-                    // Safety Buffer: Only delete if message is OLDER than 24 hours + 10 mins
-                    // This prevents early deletion due to clock differences (Clock Drift)
-                    const cutoffTime = new Date(Date.now() - ONE_DAY_MS - (10 * 60 * 1000)); 
+                    const cutoffTime = new Date(Date.now() - ONE_DAY_MS - (10 * 60 * 1000));
                     const cleanupQ = query(repliesCol, where("timestamp", "<", cutoffTime));
                     const expiredSnap = await getDocs(cleanupQ);
-
                     expiredSnap.forEach(async (docSnap) => {
-                        // Keep typing status doc safe
                         if (docSnap.id !== "typing_status") {
-                            // Delete document from Firestore (Cloudinary files stay on Cloudinary)
                             deleteDoc(docSnap.ref).catch(err => console.error("Failed to delete expired msg:", err));
                         }
                     });
@@ -773,20 +1202,47 @@
                     console.error("Cleanup process error:", error);
                 }
             };
-
-            // Run cleanup immediately, then every 1 minute to ensure exact precision
             cleanupExpiredMessages();
             setInterval(cleanupExpiredMessages, 60 * 1000);
 
+            // --- Image Lazy Load Observer ---
+            const imgObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.onload = () => img.classList.add('loaded');
+                        if (img.complete) img.classList.add('loaded');
+                        imgObserver.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '100px' });
+
+            // Track known message IDs to detect truly NEW messages
+            let knownMessageIds = new Set();
+            let isInitialLoad = true;
+
+            // Track if user was at bottom before snapshot
+            let isUserAtBottom = true;
+            chatDisplay.addEventListener('scroll', () => {
+                isUserAtBottom = chatDisplay.scrollHeight - chatDisplay.scrollTop - chatDisplay.clientHeight < 60;
+            });
+
             onSnapshot(q, (snapshot) => {
+                const ob = document.getElementById('optimistic-bubble');
+                if (ob) ob.remove();
+
                 chatMessagesList.innerHTML = '';
                 let lastDayLabel = "";
+                let hasNewMessage = false;
 
                 snapshot.forEach((doc) => {
                     const data = doc.data();
-                    if (!data.timestamp) return;
 
-                    const msgDate = data.timestamp.toDate();
+                    // Handle pending server timestamps
+                    const msgTimestamp = data.timestamp ? data.timestamp.toDate() : new Date();
+                    const timeStr = data.timestamp ? msgTimestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "...";
+
+                    const msgDate = msgTimestamp;
                     const currentDayLabel = getDayLabel(msgDate);
 
                     if (currentDayLabel !== lastDayLabel) {
@@ -802,8 +1258,12 @@
                     const senderClass = isMe ? 'msg-me' : 'msg-sanobar';
                     const senderName = isMe ? 'Bhatari' : 'Bhandhari';
 
+                    // Detect if this is a genuinely new message (not initial load)
+                    const isNew = !isInitialLoad && !knownMessageIds.has(doc.id);
+                    knownMessageIds.add(doc.id);
+                    if (isNew) hasNewMessage = true;
+
                     msgDiv.className = `chat-message ${senderClass}`;
-                    const timeStr = msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
                     let replyHtml = '';
                     if (data.replyTo) {
@@ -816,9 +1276,10 @@
                         `;
                     }
 
+                    // Image with lazy load
                     let imageHtml = '';
                     if (data.imageUrl) {
-                        imageHtml = `<div class="msg-image-wrapper"><img src="${data.imageUrl}" class="msg-attached-image" onclick="openFullscreen(this.src)"></div>`;
+                        imageHtml = `<div class="msg-image-wrapper"><img data-src="${data.imageUrl}" class="msg-attached-image" onclick="openFullscreen(this.src)" loading="lazy"></div>`;
                     }
 
                     let videoHtml = '';
@@ -834,7 +1295,7 @@
                     }
 
                     msgDiv.innerHTML = `
-                        <div class="msg-bubble">
+                        <div class="msg-bubble${isNew ? '' : ' no-anim'}">
                             <button class="reply-btn-ui" title="Reply">↩</button>
                             ${replyHtml}
                             <span class="msg-sender" style="display: block; font-size: 0.75rem; font-weight: bold; margin-bottom: 4px; opacity: 0.8;">${senderName}</span>
@@ -844,6 +1305,13 @@
                             <span class="msg-time">${timeStr}</span>
                         </div>
                     `;
+
+                    // Activate lazy load for images
+                    const imgEl = msgDiv.querySelector('.msg-attached-image');
+                    if (imgEl) {
+                        imgEl.src = imgEl.dataset.src;
+                        imgObserver.observe(imgEl);
+                    }
 
                     // Handle Reply Button Click
                     msgDiv.querySelector('.reply-btn-ui').onclick = () => {
@@ -860,7 +1328,44 @@
                     chatMessagesList.appendChild(msgDiv);
                 });
 
-                chatDisplay.scrollTop = chatDisplay.scrollHeight;
+                if (isUserAtBottom || hasNewMessage) {
+                    smoothScrollToBottom();
+                    if (hasNewMessage) {
+                        // Check last message for specific penguin reaction
+                        const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+                        const lastData = lastDoc ? lastDoc.data() : null;
+
+                        if (lastData && lastData.sender === 'sanobar' && !isInitialLoad) {
+                            setPenguinState('p-wave');
+                            const text = (lastData.text || "").toLowerCase();
+
+                            if (lastData.imageUrl || lastData.videoUrl) {
+                                showTip(randomTip('media'), 3);
+                            } else if (text.includes('pani puri') || text.includes('chaat')) {
+                                showTip(randomTip('paniPuri'), 3);
+                            } else if (text.includes('egg puff')) {
+                                showTip(randomTip('eggPuff'), 3);
+                            } else if (text.includes('sundar') || text.includes('beautiful') || text.includes('cute')) {
+                                showTip(randomTip('beautiful'), 3);
+                            } else {
+                                showTip(randomTip('receive'), 3);
+                            }
+                        } else if (!isInitialLoad) {
+                            setPenguinState('p-wave');
+                        }
+                    }
+                }
+
+                // After processing all docs, mark initial load as done
+                isInitialLoad = false;
+
+                if (!isFirstLoadFinished) {
+                    isFirstLoadFinished = true;
+                    setTimeout(() => {
+                        setPenguinState('p-wave');
+                        showTip(randomTip('welcome'), 3);
+                    }, 1500);
+                }
             });
         </script>
 
