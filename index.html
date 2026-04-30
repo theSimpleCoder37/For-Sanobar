@@ -34,6 +34,16 @@
         </div>
     </div>
 
+    <!-- Offline Protection Overlay -->
+    <div id="offline-overlay" class="password-screen" style="display: none; background: #000; z-index: 10000;">
+        <div class="password-box glass-card">
+            <div class="lock-icon">📡</div>
+            <h2 class="glow-text mb-4">Connection Required</h2>
+            <p class="body-text mb-2">Please connect to the internet to access this space.</p>
+            <p class="text-xs opacity-50 mt-4">Security verification requires an active network.</p>
+        </div>
+    </div>
+
     <!-- Hidden Content Root -->
     <div id="main-content" class="content-root"
         style="display: none; opacity: 0; transform: scale(0.98); transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);">
@@ -87,19 +97,55 @@
             <section id="s3-photos" class="glass-section center-content fade-in-hidden">
                 <div class="content-wrapper w-full py-10 scrollable-content">
 
-                    <div class="photo-card float-anim mb-6">
-                        <img class="photo-img" src="images/image1-smile.jpg" alt="Childhood Smile">
-                        <div class="card-caption">
-                            <p class="caption text-sm italic opacity-80 text-center">"That same big smile… still my
-                                favorite thing in the world ✨</p>
+                    <div class="locked-container mb-6">
+                        <div class="component-lock" onclick="focusPinInput(this)">
+                            <div class="lock-icon-small">🔒</div>
+                            <h4 class="text-sm font-semibold mb-1">Security Check</h4>
+                            <p class="text-xs opacity-60 mb-4">Enter 4-digit PIN to view</p>
+
+                            <div class="pin-display">
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                            </div>
+
+                            <p class="text-[10px] mt-4 opacity-40 uppercase tracking-tighter">Tap anywhere to type</p>
+                            <input type="tel" pattern="[0-9]*" inputmode="numeric" maxlength="4"
+                                class="pin-input-hidden" oninput="handlePinInput(this)">
+                        </div>
+                        <div class="photo-card float-anim">
+                            <img class="photo-img" src="images/image1-smile.jpg" alt="Childhood Smile">
+                            <div class="card-caption">
+                                <p class="caption text-sm italic opacity-80 text-center">"That same big smile… still my
+                                    favorite thing in the world ✨</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="photo-card float-anim-delayed mb-10">
-                        <img class="photo-img" src="images/image2-eyes.jpg" alt="Beautiful Eyes">
-                        <div class="card-caption">
-                            <p class="caption text-sm italic opacity-80 text-center">My eyes never get tired of watching
-                                you &lt;3</p>
+                    <div class="locked-container mb-10">
+                        <div class="component-lock" onclick="focusPinInput(this)">
+                            <div class="lock-icon-small">🔒</div>
+                            <h4 class="text-sm font-semibold mb-1">Security Check</h4>
+                            <p class="text-xs opacity-60 mb-4">Enter 4-digit PIN to view</p>
+
+                            <div class="pin-display">
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                            </div>
+
+                            <p class="text-[10px] mt-4 opacity-40 uppercase tracking-tighter">Tap anywhere to type</p>
+                            <input type="tel" pattern="[0-9]*" inputmode="numeric" maxlength="4"
+                                class="pin-input-hidden" oninput="handlePinInput(this)">
+                        </div>
+                        <div class="photo-card float-anim-delayed">
+                            <img class="photo-img" src="images/image2-eyes.jpg" alt="Beautiful Eyes">
+                            <div class="card-caption">
+                                <p class="caption text-sm italic opacity-80 text-center">My eyes never get tired of
+                                    watching you <3< /p>
+                            </div>
                         </div>
                     </div>
 
@@ -185,34 +231,71 @@
                 <div class="content-wrapper w-full px-4">
                     <h2 class="section-title glow-text mb-6">Something I really want to say…</h2>
 
-                    <div class="message-block custom-scroll relative">
-                        <!-- Message 1 -->
-                        <div class="message-date text-right italic text-sm mb-4 pb-2 border-b border-white/10"
-                            style="color: var(--accent-light); opacity: 0.8; font-size: 0.9rem;">Monday, 27th April
+                    <div class="locked-container">
+                        <div class="component-lock" onclick="focusPinInput(this)">
+                            <div class="lock-icon-small">✉️</div>
+                            <h4 class="text-sm font-semibold mb-1">Confidential</h4>
+                            <p class="text-xs opacity-60 mb-4">Enter PIN to read message</p>
+                            <div class="pin-display">
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                            </div>
+                            <p class="text-[10px] mt-4 opacity-40 uppercase tracking-tighter">Tap anywhere to type</p>
+                            <input type="tel" pattern="[0-9]*" inputmode="numeric" maxlength="4"
+                                class="pin-input-hidden" oninput="handlePinInput(this)">
                         </div>
-                        <p class="body-text">
-                            I have added some features, I hope you will like it...<br>
-                            <br>
-                            Aur sorry yaar, main website ki link change karne ki bhot koshish kiya, but
-                            jaha par maine website ko deploy kiya na wo allow nahi karra website change karne ko.<br>
-                            So for now it will not possible, but I will try kuch jugaad karne padenga.<br>
-                            <br>
-                            Okay the main talk, tune boli na tere face par kuch change hogaya hai, I think tere naak par
-                            change huwa hai, tune naak tochhi na? kyuki last time jab maine tujhe aawaz diya tha na, to
-                            tu mere paas aayi thi tab maine notice kiya tha, I can be wrong?<br>
-                            <br>
-                            And ab to lock bhi hai website par, to tension free hokar baat kar sakti, and main isko aur
-                            secure banane ke try karunga..<br>
-                            <br>
-                            Aur jab pin enter karte time, save password karke pop-up aaya to, do not save karna
-                            okay.<br>
-                            <br>
-                            Thankyou so muchh for being with me... 💜
-                        </p>
+                        <div class="message-block custom-scroll relative">
+                            <!-- Message 1 -->
+                            <div class="message-date text-right italic text-sm mb-4 pb-2 border-b border-white/10"
+                                style="color: var(--accent-light); opacity: 0.8; font-size: 0.9rem;">Monday, 27th April
+                            </div>
+                            <p class="body-text">
+                                I have added some features, I hope you will like it...<br>
+                                <br>
+                                Aur sorry yaar, main website ki link change karne ki bhot koshish kiya, but
+                                jaha par maine website ko deploy kiya na wo allow nahi karra website change karne
+                                ko.<br>
+                                So for now it will not possible, but I will try kuch jugaad karne padenga.<br>
+                                <br>
+                                Okay the main talk, tune boli na tere face par kuch change hogaya hai, I think tere naak
+                                par
+                                change huwa hai, tune naak tochhi na? kyuki last time jab maine tujhe aawaz diya tha na,
+                                to
+                                tu mere paas aayi thi tab maine notice kiya tha, I can be wrong?<br>
+                                <br>
+                                And ab to lock bhi hai website par, to tension free hokar baat kar sakti, and main isko
+                                aur
+                                secure banane ke try karunga..<br>
+                                <br>
+                                Aur jab pin enter karte time, save password karke pop-up aaya to, do not save karna
+                                okay.<br>
+                                <br>
+                                Thankyou so muchh for being with me... 💜
+                            </p>
+                        </div>
                     </div>
 
                     <!-- Real-time Chat Section -->
-                    <div class="chat-section mt-8 w-full max-w-[500px] mx-auto text-left">
+                    <div class="chat-section mt-8 w-full max-w-[500px] mx-auto text-left locked-container"
+                        style="min-height: 400px;">
+                        <div class="component-lock" onclick="focusPinInput(this)">
+                            <div class="lock-icon-small">💬</div>
+                            <h4 class="text-sm font-semibold mb-1">Chat Encrypted</h4>
+                            <p class="text-xs opacity-60 mb-4">Enter PIN to access messages</p>
+
+                            <div class="pin-display">
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                                <div class="pin-dot"></div>
+                            </div>
+
+                            <p class="text-[10px] mt-4 opacity-40 uppercase tracking-tighter">Tap anywhere to type</p>
+                            <input type="tel" pattern="[0-9]*" inputmode="numeric" maxlength="4"
+                                class="pin-input-hidden" oninput="handlePinInput(this)">
+                        </div>
                         <h3 class="sub-title mb-4 text-center" style="font-size: 1.2rem;">Chat Section💬</h3>
 
                         <!-- Reply box for 'Me' (User) -->

@@ -84,6 +84,125 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') checkPassword();
     });
 
+    // --- NEW: Professional Inline PIN Unlocking ---
+    window.focusPinInput = (lockElement) => {
+        const input = lockElement.querySelector('.pin-input-hidden');
+        input.focus();
+        lockElement.classList.add('focused');
+        
+        // Ensure the focused class stays as long as the input is focused
+        input.onblur = () => lockElement.classList.remove('focused');
+        input.onfocus = () => lockElement.classList.add('focused');
+    };
+
+    window.handlePinInput = (inputElement) => {
+        const lockElement = inputElement.closest('.component-lock');
+        const dots = lockElement.querySelectorAll('.pin-dot');
+        let value = inputElement.value;
+
+        // Force numeric only (extra safety for some mobile browsers)
+        value = value.replace(/[^0-9]/g, '').slice(0, 4);
+        inputElement.value = value;
+
+        // Update dots visual state
+        dots.forEach((dot, index) => {
+            if (index < value.length) {
+                dot.classList.add('filled');
+            } else {
+                dot.classList.remove('filled');
+            }
+        });
+
+        // Verify when 4 digits are entered
+        if (value.length === 4) {
+            if (value === '1102') {
+                lockElement.classList.add('unlocked');
+                lockElement.closest('.locked-container').classList.add('is-unlocked');
+                
+                // Auto-scroll chat if applicable
+                if (lockElement.closest('.chat-section')) {
+                    setTimeout(() => {
+                        const display = document.getElementById('replies-display');
+                        if (display) display.scrollTop = display.scrollHeight;
+                    }, 600);
+                }
+            } else {
+                // Shake and clear on wrong PIN
+                lockElement.classList.add('shake');
+                setTimeout(() => {
+                    lockElement.classList.remove('shake');
+                    inputElement.value = '';
+                    dots.forEach(dot => dot.classList.remove('filled'));
+                }, 400);
+            }
+        }
+    };
+
+    // --- HEAVY SECURITY: Anti-Tamper Measures ---
+    // If a dev tries to hide the lock overlay or show content via inspector, this resets it.
+    const setupTamperProtection = () => {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                const target = mutation.target;
+                const container = target.closest('.locked-container');
+                
+                // If the container is NOT unlocked but the lock is hidden/modified
+                if (container && !container.classList.contains('is-unlocked')) {
+                    if (mutation.type === 'attributes' || mutation.type === 'childList') {
+                        // Check if lock overlay was removed or hidden
+                        const lock = container.querySelector('.component-lock');
+                        if (!lock || lock.style.display === 'none' || lock.style.opacity === '0') {
+                            console.warn("Security Breach Detected: Content re-locking...");
+                            location.reload(); // Refresh to restore all security
+                        }
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.locked-container').forEach(container => {
+            observer.observe(container, { attributes: true, childList: true, subtree: true });
+        });
+    };
+    setupTamperProtection();
+
+    // --- NEW: Security & Network Handling ---
+    const offlineOverlay = document.getElementById('offline-overlay');
+    
+    const handleNetworkChange = () => {
+        if (!navigator.onLine) {
+            offlineOverlay.style.display = 'flex';
+            mainContent.style.display = 'none';
+        } else {
+            offlineOverlay.style.display = 'none';
+            if (passwordOverlay.style.display === 'none') {
+                mainContent.style.display = 'block';
+            }
+        }
+    };
+
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+    handleNetworkChange();
+
+    // Privacy Protection: RELOCK when user leaves tab
+    // We use a combination of immediate blurring and forced reload on return
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            // 1. Immediate Aggressive Blur (Prevents clear screenshots in app switcher)
+            document.body.style.filter = 'blur(50px) brightness(0.2)';
+            
+            // 2. Clear sensitive input values immediately
+            passwordInput.value = '';
+            document.querySelectorAll('.pin-input-hidden').forEach(i => i.value = '');
+        } else {
+            // 3. Forced Security Refresh on Return
+            // This ensures all state is wiped and the user MUST re-authenticate
+            console.log("Security: Forcing refresh on return...");
+            location.reload();
+        }
+    });
+
     function initMainApp() {
         // 1. Core Systems (Optimized Restore: Very low count for perfect performance)
         createParticles();
