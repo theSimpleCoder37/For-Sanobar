@@ -1182,18 +1182,14 @@
                 });
             });
 
-            // --- 24-Hour Disappearing Messages Logic ---
-            const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-
-            // 1. UI Query: Fetch messages from the last 24 hours (with a small safety overlap)
-            let dayAgo = new Date(Date.now() - ONE_DAY_MS - (10 * 60 * 1000));
+            // --- Persistence Logic: All messages will now stay ---
             let q = query(
                 repliesCol,
-                where("timestamp", ">=", dayAgo),
                 orderBy("timestamp", "asc")
             );
 
-            // 2. Reliable Background Cleanup
+            /*
+            // 2. Reliable Background Cleanup (DISABLED)
             const cleanupExpiredMessages = async () => {
                 try {
                     const cutoffTime = new Date(Date.now() - ONE_DAY_MS - (10 * 60 * 1000));
@@ -1210,6 +1206,7 @@
             };
             cleanupExpiredMessages();
             setInterval(cleanupExpiredMessages, 60 * 1000);
+            */
 
             // --- Image Lazy Load Observer ---
             const imgObserver = new IntersectionObserver((entries) => {
